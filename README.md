@@ -21,6 +21,7 @@ RESOURCES
 - https://en.wikipedia.org/wiki/Roland_TR-808 <- Wikipedia article
 - http://cdn.roland.com/assets/media/pdf/TR-808_OM.pdf <- 808 User Manual
 - https://en.wikipedia.org/wiki/Subtractive_synthesis (the analog subtractive synthesis method used by it)
+- https://en.wikipedia.org/wiki/Additive_synthesis#Explanation (you need additive synthesis to create subtractive synthesis)
 
 
 PROGRAMMING RESOURCES
