@@ -1,0 +1,9 @@
+package com.asch.eoe;
+public class Configuration {
+    // Constants of recording, depended on by the logic that generates waves.
+    public static final int SAMPLE_RATE = 44100;
+    public static final int BYTES_PER_SAMPLE = 2; // 16-bit audio
+    public static final int BITS_PER_SAMPLE = 16; // 16-bit audio
+    public static final double MAX_16_BIT = Short.MAX_VALUE; // 32,767
+    public static final int SAMPLE_BUFFER_SIZE = 4096;
+}
