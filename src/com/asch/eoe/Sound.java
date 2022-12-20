@@ -7,18 +7,28 @@ public class Sound {
     private int bufferSize = 0;
     private SourceDataLine line;
     private Oscillator oscillator;
+    private Envelope envelope;
 
     public Sound(SourceDataLine line) {
         this.line = line;
     }
 
-    // Overriden by constants defined as Sine, Sawtooth, Triangle, Square
+    // Overridden by constants defined as Sine, Sawtooth, Triangle, Square
     public void setOscillator(Oscillator oscillator) {
         this.oscillator = oscillator;
     }
 
+    public void setEnvelope(Envelope envelope) {
+        this.envelope = envelope;
+    }
+
     // This method generates the values of buffer for the signal
     public void generate(double freq, double duration) {
+        // An envelope is optional
+        if (envelope != null) {
+            envelope.setDuration(duration);
+        }
+
         for (double t = 0; t <= Configuration.SAMPLE_RATE * duration; t++) {
             /*
              * Design Choice: Have each filter and oscillator be an interface
@@ -27,6 +37,11 @@ public class Sound {
              * I did this to create a 'builder' API for creating each sound of the 808
              */
             double sample = oscillator.sample(freq, t);
+
+            if (envelope != null) {
+                sample = envelope.sample(sample, t);
+            }
+
             // TODO: Put rest of mixing pipeline stack in here.
             play(sample);
         }

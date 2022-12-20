@@ -29,14 +29,8 @@ public class EightOhEight {
         line.start();
     }
 
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-        init();
-
+    private static void playScale(Sound sound) {
         double[] c_major_scale = { 261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25 };
-
-        Sound sound = new Sound(line);
-        sound.setOscillator(new Sine());
 
         for(double pitch : c_major_scale) {
             sound.generate(pitch);
@@ -56,6 +50,25 @@ public class EightOhEight {
         for(double pitch : c_major_scale) {
             sound.generate(pitch);
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+        init();
+
+        Sound sound = new Sound(line);
+        sound.setOscillator(new Sine());
+
+        // playScale(sound);
+
+        Envelope stab = new Envelope(0, 0.2, 1, 0.1);
+        sound.setEnvelope(stab);
+
+        //sound.setEnvelope(new Envelope(0.7, 0.05, 0.7, 0.2));
+        playScale(sound);
+
+        sound.setEnvelope(null);
+        playScale(sound);
 
         line.drain();
     }

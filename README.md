@@ -25,6 +25,7 @@ RESOURCES
 - https://musicskanner.com/attack-sustain-decay-release-envelope-explained/ (ASDR envelopes explained 1000ft view)
 - https://maplelab.net/overview/amplitude-envelope/ (Amplitude envelope explained at 1000ft view)
 - https://unison.audio/808-drum/ Faking an 808 1000ft view
+- https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/460283-how-do-you-synthesize-808-ish-drums.html Good Forum thread
 
 
 PROGRAMMING RESOURCES
