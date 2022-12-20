@@ -19,7 +19,7 @@ public class Sound {
 
     // This method generates the values of buffer for the signal
     public void generate(double freq, double duration) {
-        for (double t = 0; t <= Configuration.SAMPLE_RATE; t++) {
+        for (double t = 0; t <= Configuration.SAMPLE_RATE * duration; t++) {
             /*
              * Design Choice: Have each filter and oscillator be an interface
              * This way we can iterate over the filters and oscillators in a generic
