@@ -22,6 +22,9 @@ RESOURCES
 - http://cdn.roland.com/assets/media/pdf/TR-808_OM.pdf <- 808 User Manual
 - https://en.wikipedia.org/wiki/Subtractive_synthesis (the analog subtractive synthesis method used by it)
 - https://en.wikipedia.org/wiki/Additive_synthesis#Explanation (you need additive synthesis to create subtractive synthesis)
+- https://musicskanner.com/attack-sustain-decay-release-envelope-explained/ (ASDR envelopes explained 1000ft view)
+- https://maplelab.net/overview/amplitude-envelope/ (Amplitude envelope explained at 1000ft view)
+- https://unison.audio/808-drum/ Faking an 808 1000ft view
 
 
 PROGRAMMING RESOURCES
