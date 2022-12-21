@@ -23,6 +23,10 @@ public class Envelope {
         this.sustainDuration = duration - (attackDuration + decayDuration + releaseDuration);
     }
 
+    public void setSustainDuration(double duration) {
+        this.sustainDuration = duration;
+    }
+
     // https://www.desmos.com/calculator/xuxwmr8yte Visualization of ADSR envelope
     public double sample(double input, double t) {
         // The sample time in terms of 't' units (used for intervals)
