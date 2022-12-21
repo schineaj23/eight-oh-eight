@@ -26,6 +26,8 @@ RESOURCES
 - https://maplelab.net/overview/amplitude-envelope/ (Amplitude envelope explained at 1000ft view)
 - https://unison.audio/808-drum/ Faking an 808 1000ft view
 - https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/460283-how-do-you-synthesize-808-ish-drums.html Good Forum thread
+- https://www.edmprod.com/subtractive-synthesis/#h-what-is-subtractive-synthesis good explanation and walk-through of subtractive synthesis
+- https://www.soundonsound.com/techniques/synthesizing-cowbells-claves Step by step of 808 bell
 
 
 PROGRAMMING RESOURCES
