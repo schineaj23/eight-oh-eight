@@ -1,33 +1,61 @@
 package com.asch.eoe;
 
+import java.util.ArrayList;
+
 import javax.sound.sampled.SourceDataLine;
 
 public class Sound {
     private byte[] buffer = new byte[Configuration.SAMPLE_BUFFER_SIZE * Configuration.BYTES_PER_SAMPLE];
     private int bufferSize = 0;
     private SourceDataLine line;
-    private Oscillator oscillator;
+    private ArrayList<Oscillator> oscillators = new ArrayList<>();
     private Envelope envelope;
 
     public Sound(SourceDataLine line) {
         this.line = line;
     }
 
-    // Overridden by constants defined as Sine, Sawtooth, Triangle, Square
-    public void setOscillator(Oscillator oscillator) {
-        this.oscillator = oscillator;
+    // "set" Oscillator implies that we only want one oscillator, so clear the list
+    public Sound setOscillator(Oscillator oscillator) {
+        removeOscillators();
+        oscillators.add(oscillator);
+        return this;
     }
 
-    public void setEnvelope(Envelope envelope) {
+    // Overridden by constants defined as Sine, Sawtooth, Triangle, Square
+    public Sound addOscillator(Oscillator oscillator) {
+        oscillators.add(oscillator);
+        return this;
+    }
+
+    public void removeOscillators() {
+        oscillators.clear();
+    }
+
+    public Sound setEnvelope(Envelope envelope) {
         this.envelope = envelope;
+        return this;
+    }
+
+    public void removeEnvelope() {
+        this.envelope = null;
+    }
+
+    // Combine our oscillator signals
+    private double sample(double t) {
+        double sample = 0;
+        for (Oscillator o : oscillators) {
+            sample += o.sample(t);
+        }
+        return sample;
     }
 
     // This method generates the values of buffer for the signal
-    public void generate(double freq, double duration) {
+    public void generate(double duration) {
         // An envelope is optional
-        if (envelope != null) {
-            envelope.setDuration(duration);
-        }
+        // if (envelope != null) {
+        //     envelope.setDuration(duration);
+        // }
 
         for (double t = 0; t <= Configuration.SAMPLE_RATE * duration; t++) {
             /*
@@ -36,7 +64,7 @@ public class Sound {
              * way without having specific logic in the 'Sound' class.
              * I did this to create a 'builder' API for creating each sound of the 808
              */
-            double sample = oscillator.sample(freq, t);
+            double sample = sample(t);
 
             if (envelope != null) {
                 sample = envelope.sample(sample, t);
@@ -47,8 +75,17 @@ public class Sound {
         }
     }
 
-    public void generate(double freq) {
-        generate(freq, 1);
+    // Keeping generateWithFrequency since it has a nice way of operating with the
+    // others
+    public void generateWithFrequency(double freq, double duration) {
+        for (Oscillator o : oscillators) {
+            o.setFrequency(freq);
+        }
+        generate(duration);
+    }
+
+    public void generateWithFrequency(double freq) {
+        generateWithFrequency(freq, 1);
     }
 
     // Write the buffered data to the line, only when we have the full signal.
