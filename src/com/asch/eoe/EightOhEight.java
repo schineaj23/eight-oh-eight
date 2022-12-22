@@ -2,7 +2,11 @@ package com.asch.eoe;
 
 import javax.sound.sampled.*;
 
+import com.asch.eoe.filters.HighPassFilter;
+import com.asch.eoe.filters.LowPassFilter;
+import com.asch.eoe.filters.Resonator;
 import com.asch.eoe.oscillators.Saw;
+import com.asch.eoe.oscillators.Sine;
 import com.asch.eoe.oscillators.Square;
 import com.asch.eoe.oscillators.Triangle;
 
@@ -67,7 +71,7 @@ public class EightOhEight {
         init();
 
         // Sound sound = new Sound(line);
-        // sound.setOscillator(new Sine());
+        // sound.setOscillator(new Sine(50));
         // Envelope bass = new Envelope(0.05, 0.2, 1, 0.05);
         // sound.setEnvelope(bass);
         // testBass(sound);
@@ -76,12 +80,22 @@ public class EightOhEight {
         // sound.setEnvelope(kick);
 
         Sound cowbell = new Sound(line);
-        cowbell.addOscillator(new Triangle(845.4)).addOscillator(new Triangle(587.3));
-        Envelope bellEnvelope = new Envelope(0.005, 0.283, 0.1, 0.1);
-        bellEnvelope.setSustainDuration(0.283);
-        cowbell.setEnvelope(bellEnvelope);
+        cowbell.addOscillator(new Square(540)).addOscillator(new Square(800));
+        //cowbell.addOscillator(new Saw(540.3));
+        Envelope bellEnvelope = new Envelope(0.05, 0.15, 0.55, 0.6);
+        bellEnvelope.setSustainDuration(0);
+        bellEnvelope.setDuration(0.6);
+        //Resonator resonator = new Resonator(2);
+        LowPassFilter lowPass = new LowPassFilter(2640);
+        HighPassFilter highPass = new HighPassFilter(2640);
 
-        cowbell.generate(1);
+
+        cowbell.setEnvelope(bellEnvelope);
+        //cowbell.addFilter(resonator);
+        cowbell.addFilter(lowPass);
+        cowbell.addFilter(highPass);
+        //cowbell.setAmplifier(new VoltageControlledAmplifier(bellEnvelope));
+        cowbell.generate(0.5);
 
         line.drain();
     }

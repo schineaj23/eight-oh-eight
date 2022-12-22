@@ -9,7 +9,9 @@ public class Sound {
     private int bufferSize = 0;
     private SourceDataLine line;
     private ArrayList<Oscillator> oscillators = new ArrayList<>();
+    private ArrayList<Filter> filters = new ArrayList<>();
     private Envelope envelope;
+    private VoltageControlledAmplifier amplifier;
 
     public Sound(SourceDataLine line) {
         this.line = line;
@@ -41,6 +43,19 @@ public class Sound {
         this.envelope = null;
     }
 
+    public Sound addFilter(Filter filter) {
+        this.filters.add(filter);
+        return this;
+    }
+
+    public void removeFilters() {
+        filters.clear();
+    }
+
+    public void setAmplifier(VoltageControlledAmplifier amplifier) {
+        this.amplifier = amplifier;
+    }
+
     // Combine our oscillator signals
     private double sample(double t) {
         double sample = 0;
@@ -50,13 +65,20 @@ public class Sound {
         return sample;
     }
 
+    private double applyFilters(double sample) {
+        if (filters.isEmpty())
+            return sample;
+
+        // Pipe the output from filter to next filter
+        double lastSample = sample;
+        for (Filter f : filters) {
+            lastSample = f.sample(lastSample);
+        }
+        return lastSample;
+    }
+
     // This method generates the values of buffer for the signal
     public void generate(double duration) {
-        // An envelope is optional
-        // if (envelope != null) {
-        //     envelope.setDuration(duration);
-        // }
-
         for (double t = 0; t <= Configuration.SAMPLE_RATE * duration; t++) {
             /*
              * Design Choice: Have each filter and oscillator be an interface
@@ -66,11 +88,18 @@ public class Sound {
              */
             double sample = sample(t);
 
+            // TODO: Put rest of mixing pipeline stack in here.
+
             if (envelope != null) {
                 sample = envelope.sample(sample, t);
             }
 
-            // TODO: Put rest of mixing pipeline stack in here.
+            sample = applyFilters(sample);
+
+            if(amplifier != null) {
+                sample = amplifier.sample(sample, t);
+            }
+
             play(sample);
         }
     }

@@ -14,11 +14,7 @@ public class Square extends Oscillator {
 
     @Override
     public double sample(double t) {
-        double val = Math.sin(Math.PI * freq * t / Configuration.SAMPLE_RATE);
-        if (val < 0)
-            val = -1;
-        else if (val > 0)
-            val = 1;
+        double val = Math.signum(Math.sin(Math.PI * freq * t / (double)Configuration.SAMPLE_RATE));
         return 0.5 * val;
     }
 }
