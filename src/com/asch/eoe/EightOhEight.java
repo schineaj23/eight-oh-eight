@@ -2,6 +2,8 @@ package com.asch.eoe;
 
 import javax.sound.sampled.*;
 
+import com.asch.eoe.envelopes.ADSREnvelope;
+import com.asch.eoe.envelopes.ExponentialEnvelope;
 import com.asch.eoe.filters.HighPassFilter;
 import com.asch.eoe.filters.LowPassFilter;
 import com.asch.eoe.filters.Resonator;
@@ -66,36 +68,42 @@ public class EightOhEight {
         sound.generateWithFrequency(77.78, 0.5);
     }
 
+    // Leaving this here for later but it is complete.
+    private static void createCowbell() {
+        Sound cowbell = new Sound(line);
+        cowbell.addOscillator(new Square(545)).addOscillator(new Square(815));
+
+        ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(0.7, 0.001, 0.3);
+
+        LowPassFilter lowPass = new LowPassFilter(700);
+        HighPassFilter highPass = new HighPassFilter(700);
+
+        cowbell.setEnvelope(bellEnvelope);
+        cowbell.addFilter(lowPass);
+        cowbell.addFilter(highPass);
+        cowbell.generate(1);
+    }
+
     public static void main(String[] args) {
         System.out.println("Hello world!");
         init();
 
-        // Sound sound = new Sound(line);
-        // sound.setOscillator(new Sine(50));
-        // Envelope bass = new Envelope(0.05, 0.2, 1, 0.05);
-        // sound.setEnvelope(bass);
-        // testBass(sound);
+        Sound bass = new Sound(line);
+        bass.addOscillator(new Sine(50));
+        // ADSREnvelope bassEnvelope = new ADSREnvelope(0.0001, 0.7, 1, 0.3);
+        // bassEnvelope.setDuration(1.5);
+        // bassEnvelope.setSustainDuration(0.15);
+        ExponentialEnvelope bassEnvelope = new ExponentialEnvelope(1,0.0001, 0.8);
+        bass.setEnvelope(bassEnvelope);
+        //bass.setAmplifier(new VoltageControlledAmplifier(new ExponentialEnvelope(1.2, 0.0001, 1)));
+        //bass.addFilter(new HighPassFilter(45));
+        bass.addFilter(new LowPassFilter(50));
+        bass.generate(2);
 
         // Envelope kick = new Envelope(0.05, 0.2,0.05, 0.05);
         // sound.setEnvelope(kick);
 
-        Sound cowbell = new Sound(line);
-        cowbell.addOscillator(new Square(540)).addOscillator(new Square(800));
-        //cowbell.addOscillator(new Saw(540.3));
-        Envelope bellEnvelope = new Envelope(0.05, 0.15, 0.55, 0.6);
-        bellEnvelope.setSustainDuration(0);
-        bellEnvelope.setDuration(0.6);
-        //Resonator resonator = new Resonator(2);
-        LowPassFilter lowPass = new LowPassFilter(2640);
-        HighPassFilter highPass = new HighPassFilter(2640);
 
-
-        cowbell.setEnvelope(bellEnvelope);
-        //cowbell.addFilter(resonator);
-        cowbell.addFilter(lowPass);
-        cowbell.addFilter(highPass);
-        //cowbell.setAmplifier(new VoltageControlledAmplifier(bellEnvelope));
-        cowbell.generate(0.5);
 
         line.drain();
     }

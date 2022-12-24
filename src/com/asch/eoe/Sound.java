@@ -59,8 +59,10 @@ public class Sound {
     // Combine our oscillator signals
     private double sample(double t) {
         double sample = 0;
+        // Taking the average of all the signals such that the sample is not greater than 1
+        double multiplier =  1f / oscillators.size();
         for (Oscillator o : oscillators) {
-            sample += o.sample(t);
+            sample += o.sample(t) * multiplier;
         }
         return sample;
     }
