@@ -9,8 +9,4 @@ public abstract class Oscillator {
     public void setFrequency(double freq) {
         this.freq = freq;
     }
-
-    public Oscillator(double freq) {
-        setFrequency(freq);
-    }
 }

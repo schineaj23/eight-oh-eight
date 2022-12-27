@@ -5,11 +5,11 @@ import com.asch.eoe.Oscillator;
 
 public class Saw extends Oscillator {
     public Saw() {
-        super(0);
+        this.freq = 0;
     }
 
     public Saw(double freq) {
-        super(freq);
+        this.freq = freq;
     }
 
     @Override

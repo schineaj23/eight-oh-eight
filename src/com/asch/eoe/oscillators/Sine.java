@@ -5,11 +5,11 @@ import com.asch.eoe.Oscillator;
 
 public class Sine extends Oscillator {
     public Sine() {
-        super(0);
+        this.freq = 0;
     }
 
     public Sine(double freq) {
-        super(freq);
+        this.freq = freq;
     }
 
     @Override

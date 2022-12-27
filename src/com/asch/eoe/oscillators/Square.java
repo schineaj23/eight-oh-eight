@@ -5,11 +5,11 @@ import com.asch.eoe.Oscillator;
 
 public class Square extends Oscillator {
     public Square() {
-        super(0);
+        this.freq = 0;
     }
 
     public Square(double freq) {
-        super(freq);
+        this.freq = freq;
     }
 
     @Override

@@ -5,11 +5,11 @@ import com.asch.eoe.Oscillator;
 
 public class Triangle extends Oscillator {
     public Triangle() {
-        super(0);
+        this.freq = 0;
     }
 
     public Triangle(double freq) {
-        super(freq);
+        this.freq = freq;
     }
 
     @Override
