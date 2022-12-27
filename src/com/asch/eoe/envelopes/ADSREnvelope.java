@@ -52,17 +52,17 @@ public class ADSREnvelope implements Envelope {
         }
 
         // Decay Phase
-        if (t > tAttack && t <= tAttack + tDecay) {
+        else if (t > tAttack && t <= tAttack + tDecay) {
             coefficient = ((sustainGain - 1) / sustainDuration) * (time - attackDuration) + 1;
         }
 
         // Sustain Phase
-        if (t > tAttack + tDecay && t <= tAttack + tDecay + tSustain) {
+        else if (t > tAttack + tDecay && t <= tAttack + tDecay + tSustain) {
             coefficient = sustainGain;
         }
 
         // Release Phase
-        if (t > tAttack + tDecay + tSustain && t <= tAttack + tDecay + tSustain + tRelease) {
+        else if (t > tAttack + tDecay + tSustain && t <= tAttack + tDecay + tSustain + tRelease) {
             coefficient = ((-sustainGain / releaseDuration) * (time - (attackDuration + decayDuration + sustainDuration))) + sustainGain;
         }
 
