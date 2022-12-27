@@ -12,6 +12,7 @@ public class Sound {
     private ArrayList<Filter> filters = new ArrayList<>();
     private Envelope envelope;
     private VoltageControlledAmplifier amplifier;
+    private double gain = 1;
 
     public Sound(SourceDataLine line) {
         this.line = line;
@@ -56,6 +57,10 @@ public class Sound {
         this.amplifier = amplifier;
     }
 
+    public void setGain(double gain) {
+        this.gain = gain;
+    }
+
     // Combine our oscillator signals
     private double sample(double t) {
         double sample = 0;
@@ -88,7 +93,7 @@ public class Sound {
              * way without having specific logic in the 'Sound' class.
              * I did this to create a 'builder' API for creating each sound of the 808
              */
-            double sample = sample(t);
+            double sample = sample(t) * gain;
 
             // TODO: Put rest of mixing pipeline stack in here.
 
