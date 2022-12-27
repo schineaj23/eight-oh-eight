@@ -1,0 +1,18 @@
+# TR-808 Sound List
+- accent
+- ~~bass drum~~
+- ~~snare drum~~
+- low conga
+- low tom
+- mid conga
+- mid tom
+- hi conga
+- hi tom
+- ~~clave~~
+- rimshot
+- maraca
+- handclap
+- ~~cowbell~~
+- cymbal
+- open hat
+- closed hat
