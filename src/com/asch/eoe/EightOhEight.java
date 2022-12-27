@@ -7,6 +7,7 @@ import com.asch.eoe.envelopes.ExponentialEnvelope;
 import com.asch.eoe.filters.HighPassFilter;
 import com.asch.eoe.filters.LowPassFilter;
 import com.asch.eoe.filters.Resonator;
+import com.asch.eoe.oscillators.Noise;
 import com.asch.eoe.oscillators.Saw;
 import com.asch.eoe.oscillators.Sine;
 import com.asch.eoe.oscillators.Square;
@@ -73,7 +74,7 @@ public class EightOhEight {
         Sound cowbell = new Sound(line);
         cowbell.addOscillator(new Square(545)).addOscillator(new Square(815));
 
-        ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(0.7, 0.001, 0.3);
+        ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(0.6, 0.001, 0.2);
 
         LowPassFilter lowPass = new LowPassFilter(700);
         HighPassFilter highPass = new HighPassFilter(700);
@@ -84,26 +85,48 @@ public class EightOhEight {
         cowbell.generate(1);
     }
 
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-        init();
-
+    private static void createBassDrum() {
         Sound bass = new Sound(line);
         bass.addOscillator(new Sine(50));
-        // ADSREnvelope bassEnvelope = new ADSREnvelope(0.0001, 0.7, 1, 0.3);
-        // bassEnvelope.setDuration(1.5);
-        // bassEnvelope.setSustainDuration(0.15);
         ExponentialEnvelope bassEnvelope = new ExponentialEnvelope(1,0.0001, 0.8);
         bass.setEnvelope(bassEnvelope);
-        //bass.setAmplifier(new VoltageControlledAmplifier(new ExponentialEnvelope(1.2, 0.0001, 1)));
-        //bass.addFilter(new HighPassFilter(45));
         bass.addFilter(new LowPassFilter(50));
         bass.generate(2);
+    }
 
-        // Envelope kick = new Envelope(0.05, 0.2,0.05, 0.05);
-        // sound.setEnvelope(kick);
+    private static void createClave() {
+        Sound clave = new Sound(line);
+        clave.addOscillator(new Sine(1200));
+        ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(1, 0.001, 0.05);
+        LowPassFilter lowPass = new LowPassFilter(1200);
+        HighPassFilter highPass = new HighPassFilter(1200);
+        clave.setEnvelope(bellEnvelope);
+        clave.addFilter(lowPass);
+        clave.addFilter(highPass);
+        clave.setAmplifier(new VoltageControlledAmplifier(bellEnvelope, 1.2));
+        clave.generate(0.5);
+    }
 
+    private static void createSnare() {
+        Sound snare = new Sound(line);
+        snare.addOscillator(new Sine(89)).addOscillator(new Noise(0.12));
 
+        // https://talkinmusic.com/snare-eq-phat-punchy-snare-eq/ tips for EQ'ing snares
+        snare.addFilter(new LowPassFilter(1500));
+        snare.addFilter(new HighPassFilter(60));
+
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(2, 0.0001, 0.06);
+        snare.setAmplifier(new VoltageControlledAmplifier(snareEnvelope));
+
+        snare.generate(0.5);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("808 now playing.");
+        init();
+
+        createSnare();
+        createClave();
 
         line.drain();
     }
