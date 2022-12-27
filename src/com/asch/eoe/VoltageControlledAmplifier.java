@@ -14,7 +14,7 @@ public class VoltageControlledAmplifier {
     }
 
     public double sample(double value, double t) {
-        return value + envelope.sample(value, t) * gain;
+        return value * envelope.sample(value, t) * gain;
     }
 
 }
