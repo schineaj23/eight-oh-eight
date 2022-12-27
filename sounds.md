@@ -2,12 +2,8 @@
 - accent
 - ~~bass drum~~
 - ~~snare drum~~
-- low conga
-- low tom
-- mid conga
-- mid tom
-- hi conga
-- hi tom
+- conga (low/mid/hi)
+- tom (low/mid/hi)
 - ~~clave~~
 - rimshot
 - maraca
