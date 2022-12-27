@@ -15,23 +15,43 @@ import com.asch.eoe.oscillators.Triangle;
 
 public class EightOhEight {
 
-    private static AudioFormat format = new AudioFormat((float) Configuration.SAMPLE_RATE,
-            Configuration.BITS_PER_SAMPLE, 2, true, false);
     private static SourceDataLine line;
 
+    private static Clip cowbellClip;
+
+    private static Mixer mixer;
+
     private static void init() {
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, Configuration.FORMAT);
+        DataLine.Info clipInfo = new DataLine.Info(Clip.class, Configuration.FORMAT);
+        Mixer.Info mixerInfo[] = AudioSystem.getMixerInfo();
+
         if (!AudioSystem.isLineSupported(info)) {
             System.out.println("Line not supported!");
         }
 
-        // Obtain and open the line
-        try {
-            line = (SourceDataLine) AudioSystem.getLine(info);
-            line.open(format, Configuration.SAMPLE_BUFFER_SIZE * Configuration.BYTES_PER_SAMPLE);
-        } catch (LineUnavailableException e) {
-            System.out.println("Line unavailable!");
+        for (Mixer.Info m : mixerInfo) {
+            System.out.printf("Mixer: %s\n========\n", m.getName());
         }
+
+        try {
+            // TODO: detect default interface
+            mixer = AudioSystem.getMixer(mixerInfo[5]);
+            cowbellClip = (Clip) mixer.getLine(clipInfo);
+            line = (SourceDataLine) mixer.getLine(info);
+            line.open(Configuration.FORMAT, Configuration.SAMPLE_BUFFER_SIZE * Configuration.BYTES_PER_SAMPLE);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Obtain and open the line
+        // try {
+        // line = (SourceDataLine) AudioSystem.getLine(info);
+        // line.open(format, Configuration.SAMPLE_BUFFER_SIZE *
+        // Configuration.BYTES_PER_SAMPLE);
+        // } catch (LineUnavailableException e) {
+        // System.out.println("Line unavailable!");
+        // }
         line.start();
     }
 
@@ -70,7 +90,7 @@ public class EightOhEight {
 
     // Leaving this here for later but it is complete.
     private static void createCowbell() {
-        Sound cowbell = new Sound(line);
+        Sound cowbell = new Sound(cowbellClip);
         cowbell.addOscillator(new Square(545)).addOscillator(new Square(815));
 
         ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(0.6, 0.001, 0.2);
@@ -82,12 +102,31 @@ public class EightOhEight {
         cowbell.addFilter(lowPass);
         cowbell.addFilter(highPass);
         cowbell.generate(1);
+
+        try {
+            cowbellClip.open(Configuration.FORMAT, cowbell.getData(), 0, cowbell.getBufferSize());
+        } catch (LineUnavailableException e) {
+            System.out.println("Cowbell could not open line!");
+        }
+
+        System.out.printf("bufferSize: %d", cowbell.getBufferSize());
+
+        cowbellClip.setFramePosition(0);
+        cowbellClip.start();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     private static void createBassDrum() {
         Sound bass = new Sound(line);
         bass.addOscillator(new Sine(50));
-        ExponentialEnvelope bassEnvelope = new ExponentialEnvelope(1,0.0001, 0.8);
+        ExponentialEnvelope bassEnvelope = new ExponentialEnvelope(1, 0.0001, 0.8);
         bass.setEnvelope(bassEnvelope);
         bass.addFilter(new LowPassFilter(50));
         bass.generate(2);
@@ -120,11 +159,12 @@ public class EightOhEight {
         snare.generate(0.5);
     }
 
-    // TODO: implement sound mixing such that I can synthesize the handclap correctly
+    // TODO: implement sound mixing such that I can synthesize the handclap
+    // correctly
     // Use this tutorial: https://www.youtube.com/watch?v=lG1h28gv1HU
     private static void createHandClap() {
         Sound handclap = new Sound(line);
-        handclap.setOscillator(new Noise(0.8))/* .addOscillator(new Triangle(70)) */;
+        handclap.setOscillator(new Noise(0.8));
 
         ADSREnvelope envelope = new ADSREnvelope(0.001, 0.01, 0.8, 0.42);
         envelope.setSustainDuration(0.2);
@@ -143,7 +183,7 @@ public class EightOhEight {
         System.out.println("808 now playing.");
         init();
 
-        createHandClap();
+        createCowbell();
 
         line.drain();
     }
