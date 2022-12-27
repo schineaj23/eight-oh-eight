@@ -11,7 +11,7 @@
 - ~~clave~~
 - rimshot
 - maraca
-- handclap
+- ~~handclap~~
 - ~~cowbell~~
 - cymbal
 - open hat
