@@ -32,7 +32,6 @@ public class EightOhEight {
         } catch (LineUnavailableException e) {
             System.out.println("Line unavailable!");
         }
-
         line.start();
     }
 
@@ -121,12 +120,30 @@ public class EightOhEight {
         snare.generate(0.5);
     }
 
+    // TODO: implement sound mixing such that I can synthesize the handclap correctly
+    // Use this tutorial: https://www.youtube.com/watch?v=lG1h28gv1HU
+    private static void createHandClap() {
+        Sound handclap = new Sound(line);
+        handclap.setOscillator(new Noise(0.8))/* .addOscillator(new Triangle(70)) */;
+
+        ADSREnvelope envelope = new ADSREnvelope(0.001, 0.01, 0.8, 0.42);
+        envelope.setSustainDuration(0.2);
+        handclap.setEnvelope(envelope);
+
+        ExponentialEnvelope ampEnvelope = new ExponentialEnvelope(1, 0.01, 0.25);
+        handclap.setAmplifier(new VoltageControlledAmplifier(ampEnvelope));
+
+        handclap.addFilter(new HighPassFilter(1000));
+        handclap.addFilter(new LowPassFilter(6000));
+
+        handclap.generate(0.4);
+    }
+
     public static void main(String[] args) {
         System.out.println("808 now playing.");
         init();
 
-        createSnare();
-        createClave();
+        createHandClap();
 
         line.drain();
     }

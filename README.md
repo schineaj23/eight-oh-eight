@@ -28,6 +28,7 @@ RESOURCES
 - https://gearspace.com/board/electronic-music-instruments-and-electronic-music-production/460283-how-do-you-synthesize-808-ish-drums.html Good Forum thread
 - https://www.edmprod.com/subtractive-synthesis/#h-what-is-subtractive-synthesis good explanation and walk-through of subtractive synthesis
 - https://www.soundonsound.com/techniques/synthesizing-cowbells-claves Step by step of 808 bell
+- https://www.attackmagazine.com/technique/tutorials/synthesizing-a-clap-with-white-noise/ Handclap resource
 
 
 PROGRAMMING RESOURCES
