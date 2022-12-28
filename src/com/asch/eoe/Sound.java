@@ -103,11 +103,11 @@ public class Sound {
     // This method generates the values of buffer for the signal
     public void generate(double duration) {
         // Initialize our buffer for generation
-        // If we are using the Clip API, then make the buffer the size of our duration
+        // If we are using the Clip API, then make the buffer size correspond to the duration
         if (line == null) {
             buffer = new byte[(int) (Configuration.BYTES_PER_SAMPLE * duration * Configuration.SAMPLE_RATE)];
         } else {
-            // Or else, 1 second for Line API
+            // Or else, use standard buffer size for Line
             buffer = new byte[Configuration.SAMPLE_BUFFER_SIZE * Configuration.BYTES_PER_SAMPLE];
         }
 

@@ -13,15 +13,22 @@ import com.asch.eoe.oscillators.Sine;
 import com.asch.eoe.oscillators.Square;
 import com.asch.eoe.oscillators.Triangle;
 
-public class EightOhEight {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class EightOhEight extends Application{
 
     private static SourceDataLine line;
 
-    private static Clip cowbellClip;
+    public static Clip cowbellClip;
+    public static Clip accentClip;
 
     private static Mixer mixer;
 
-    private static void init() {
+    private static void initAudio() {
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, Configuration.FORMAT);
         DataLine.Info clipInfo = new DataLine.Info(Clip.class, Configuration.FORMAT);
         Mixer.Info mixerInfo[] = AudioSystem.getMixerInfo();
@@ -38,6 +45,7 @@ public class EightOhEight {
             // TODO: detect default interface
             mixer = AudioSystem.getMixer(mixerInfo[5]);
             cowbellClip = (Clip) mixer.getLine(clipInfo);
+            accentClip = (Clip) mixer.getLine(clipInfo);
             line = (SourceDataLine) mixer.getLine(info);
             line.open(Configuration.FORMAT, Configuration.SAMPLE_BUFFER_SIZE * Configuration.BYTES_PER_SAMPLE);
         } catch (Exception e) {
@@ -109,18 +117,8 @@ public class EightOhEight {
             System.out.println("Cowbell could not open line!");
         }
 
-        System.out.printf("bufferSize: %d", cowbell.getBufferSize());
-
         cowbellClip.setFramePosition(0);
-        cowbellClip.start();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+        cowbellClip.setLoopPoints(0, -1);
     }
 
     private static void createBassDrum() {
@@ -133,7 +131,7 @@ public class EightOhEight {
     }
 
     private static void createClave() {
-        Sound clave = new Sound(line);
+        Sound clave = new Sound(accentClip);
         clave.addOscillator(new Sine(1200));
         ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(1, 0.001, 0.05);
         LowPassFilter lowPass = new LowPassFilter(1200);
@@ -143,6 +141,15 @@ public class EightOhEight {
         clave.addFilter(highPass);
         clave.setAmplifier(new VoltageControlledAmplifier(bellEnvelope, 1.2));
         clave.generate(0.5);
+
+        try {
+            accentClip.open(Configuration.FORMAT, clave.getData(), 0, clave.getBufferSize());
+        } catch (LineUnavailableException e) {
+            System.out.println("Clave could not open line!");
+        }
+
+        accentClip.setFramePosition(0);
+        accentClip.setLoopPoints(0, -1);
     }
 
     private static void createSnare() {
@@ -181,10 +188,26 @@ public class EightOhEight {
 
     public static void main(String[] args) {
         System.out.println("808 now playing.");
-        init();
+        launch(args);
 
-        createCowbell();
-
+        System.out.println("Cleaning up...");
+        cowbellClip.drain();
+        accentClip.drain();
         line.drain();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        initAudio();
+
+        // TODO: put create for all, or have some clas that instantiates all objects and their controllers
+        createCowbell();
+        createClave();
+
+        Parent root = FXMLLoader.load(getClass().getResource("ui/EightOhEight.fxml"));
+        primaryStage.setTitle("EightOhEight");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 }
