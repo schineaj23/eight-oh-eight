@@ -24,9 +24,23 @@ public class EightOhEight extends Application{
     private static SourceDataLine line;
 
     public static Clip cowbellClip;
-    public static Clip accentClip;
+    public static Clip claveClip;
+    public static Clip handclapClip;
+    public static Clip snareClip;
+    public static Clip bassClip;
 
     private static Mixer mixer;
+
+    private static void assignClip(Sound sound, Clip clip) {
+        try {
+            clip.open(Configuration.FORMAT, sound.getData(), 0, sound.getBufferSize());
+        } catch (LineUnavailableException e) {
+            System.out.printf("%s could not open line!", sound.toString());
+        }
+
+        clip.setFramePosition(0);
+        clip.setLoopPoints(0, -1);
+    }
 
     private static void initAudio() {
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, Configuration.FORMAT);
@@ -44,8 +58,14 @@ public class EightOhEight extends Application{
         try {
             // TODO: detect default interface
             mixer = AudioSystem.getMixer(mixerInfo[5]);
+
             cowbellClip = (Clip) mixer.getLine(clipInfo);
-            accentClip = (Clip) mixer.getLine(clipInfo);
+            claveClip = (Clip) mixer.getLine(clipInfo);
+            handclapClip = (Clip) mixer.getLine(clipInfo);
+            snareClip = (Clip) mixer.getLine(clipInfo);
+            bassClip = (Clip) mixer.getLine(clipInfo);
+
+
             line = (SourceDataLine) mixer.getLine(info);
             line.open(Configuration.FORMAT, Configuration.SAMPLE_BUFFER_SIZE * Configuration.BYTES_PER_SAMPLE);
         } catch (Exception e) {
@@ -111,27 +131,22 @@ public class EightOhEight extends Application{
         cowbell.addFilter(highPass);
         cowbell.generate(1);
 
-        try {
-            cowbellClip.open(Configuration.FORMAT, cowbell.getData(), 0, cowbell.getBufferSize());
-        } catch (LineUnavailableException e) {
-            System.out.println("Cowbell could not open line!");
-        }
-
-        cowbellClip.setFramePosition(0);
-        cowbellClip.setLoopPoints(0, -1);
+        assignClip(cowbell, cowbellClip);
     }
 
     private static void createBassDrum() {
-        Sound bass = new Sound(line);
+        Sound bass = new Sound(bassClip);
         bass.addOscillator(new Sine(50));
         ExponentialEnvelope bassEnvelope = new ExponentialEnvelope(1, 0.0001, 0.8);
         bass.setEnvelope(bassEnvelope);
         bass.addFilter(new LowPassFilter(50));
         bass.generate(2);
+
+        assignClip(bass, bassClip);
     }
 
     private static void createClave() {
-        Sound clave = new Sound(accentClip);
+        Sound clave = new Sound(claveClip);
         clave.addOscillator(new Sine(1200));
         ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(1, 0.001, 0.05);
         LowPassFilter lowPass = new LowPassFilter(1200);
@@ -142,18 +157,11 @@ public class EightOhEight extends Application{
         clave.setAmplifier(new VoltageControlledAmplifier(bellEnvelope, 1.2));
         clave.generate(0.5);
 
-        try {
-            accentClip.open(Configuration.FORMAT, clave.getData(), 0, clave.getBufferSize());
-        } catch (LineUnavailableException e) {
-            System.out.println("Clave could not open line!");
-        }
-
-        accentClip.setFramePosition(0);
-        accentClip.setLoopPoints(0, -1);
+        assignClip(clave, claveClip);
     }
 
     private static void createSnare() {
-        Sound snare = new Sound(line);
+        Sound snare = new Sound(snareClip);
         snare.addOscillator(new Sine(89)).addOscillator(new Noise(0.12));
 
         // https://talkinmusic.com/snare-eq-phat-punchy-snare-eq/ tips for EQ'ing snares
@@ -164,13 +172,15 @@ public class EightOhEight extends Application{
         snare.setAmplifier(new VoltageControlledAmplifier(snareEnvelope));
 
         snare.generate(0.5);
+
+        assignClip(snare, snareClip);
     }
 
     // TODO: implement sound mixing such that I can synthesize the handclap
     // correctly
     // Use this tutorial: https://www.youtube.com/watch?v=lG1h28gv1HU
     private static void createHandClap() {
-        Sound handclap = new Sound(line);
+        Sound handclap = new Sound(handclapClip);
         handclap.setOscillator(new Noise(0.8));
 
         ADSREnvelope envelope = new ADSREnvelope(0.001, 0.01, 0.8, 0.42);
@@ -184,26 +194,31 @@ public class EightOhEight extends Application{
         handclap.addFilter(new LowPassFilter(6000));
 
         handclap.generate(0.4);
+
+        assignClip(handclap, handclapClip);
     }
 
     public static void main(String[] args) {
         System.out.println("808 now playing.");
-        launch(args);
-
-        System.out.println("Cleaning up...");
-        cowbellClip.drain();
-        accentClip.drain();
-        line.drain();
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
         initAudio();
 
         // TODO: put create for all, or have some clas that instantiates all objects and their controllers
         createCowbell();
         createClave();
+        createBassDrum();
+        createHandClap();
+        createSnare();
 
+        launch(args);
+
+        System.out.println("Cleaning up...");
+        cowbellClip.drain();
+        claveClip.drain();
+        line.drain();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("ui/EightOhEight.fxml"));
         primaryStage.setTitle("EightOhEight");
         primaryStage.setScene(new Scene(root));

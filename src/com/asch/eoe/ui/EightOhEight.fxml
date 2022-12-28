@@ -39,6 +39,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
@@ -99,24 +100,24 @@
           </font>
         </Label>
             <Separator layoutX="174.0" layoutY="365.0" prefHeight="0.0" prefWidth="734.0" />
-            <HBox fx:id="stepContainer" layoutX="181.0" layoutY="380.0" prefHeight="62.0" prefWidth="717.0" spacing="10.0">
+            <HBox fx:id="stepContainer" layoutX="180.0" layoutY="385.0" prefHeight="62.0" prefWidth="717.0" spacing="29.0">
                <children>
-                  <Button fx:id="step1" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="1" />
-                  <Button fx:id="step2" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="2" />
-                  <Button fx:id="step3" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="3" />
-                  <Button fx:id="step4" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="4" />
-                  <Button fx:id="step5" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="5" />
-                  <Button fx:id="step6" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="6" />
-                  <Button fx:id="step7" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="7" />
-                  <Button fx:id="step8" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="8" />
-                  <Button fx:id="step9" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="9" />
-                  <Button fx:id="step10" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="10" />
-                  <Button fx:id="step11" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="11" />
-                  <Button fx:id="step12" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="12" />
-                  <Button fx:id="step13" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="13" />
-                  <Button fx:id="step14" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="14" />
-                  <Button fx:id="step15" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="15" />
-                  <Button fx:id="step16" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="16" />
+                  <RadioButton fx:id="step1" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step3" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step4" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step5" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step6" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step7" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step8" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step9" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step10" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step11" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step12" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step13" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step14" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step15" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
+                  <RadioButton fx:id="step16" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="14.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" translateX="10.0" translateY="10.0" />
                </children>
             </HBox>
             <Button fx:id="startButton" alignment="CENTER" layoutX="23.0" layoutY="360.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="88.0" text="START&#10;STOP" textAlignment="CENTER" />
@@ -249,7 +250,7 @@
                   <Label layoutX="96.0" layoutY="54.0" text="CY" />
                   <Label layoutX="94.0" layoutY="38.0" text="CB" />
                   <Label layoutX="84.0" layoutY="24.0" text="CP" />
-                  <Label layoutX="67.0" layoutY="19.0" text="BS" />
+                  <Label layoutX="67.0" layoutY="19.0" text="RS" />
                   <Label layoutX="24.0" layoutY="81.0" text="AC" />
                   <Label layoutX="47.0" layoutY="19.0" text="HT" />
                   <Label layoutX="27.0" layoutY="24.0" text="MT" />
@@ -442,6 +443,22 @@
                   <CubicCurve controlX1="15.25" controlX2="15.25" controlY1="-9.25" controlY2="-9.25" endX="24.25" endY="-8.25" fill="#ffffff00" layoutX="50.0" layoutY="50.0" startX="6.0" startY="-8.25" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" translateX="640.0" translateY="-40.0" />
                </children>
             </Pane>
+            <Label layoutX="194.0" layoutY="372.0" text="1" />
+            <Label layoutX="204.0" layoutY="382.0" text="2" translateX="36.0" translateY="-10.0" />
+            <Label layoutX="214.0" layoutY="392.0" text="3" translateX="72.0" translateY="-20.0" />
+            <Label layoutX="223.0" layoutY="392.0" text="4" translateX="108.0" translateY="-20.0" />
+            <Label layoutX="234.0" layoutY="392.0" text="5" translateX="144.0" translateY="-20.0" />
+            <Label layoutX="244.0" layoutY="392.0" text="6" translateX="180.0" translateY="-20.0" />
+            <Label layoutX="254.0" layoutY="392.0" text="7" translateX="216.0" translateY="-20.0" />
+            <Label layoutX="264.0" layoutY="392.0" text="8" translateX="252.0" translateY="-20.0" />
+            <Label layoutX="274.0" layoutY="392.0" text="9" translateX="288.0" translateY="-20.0" />
+            <Label layoutX="281.0" layoutY="392.0" text="10" translateX="324.0" translateY="-20.0" />
+            <Label layoutX="290.0" layoutY="392.0" text="11" translateX="360.0" translateY="-20.0" />
+            <Label layoutX="301.0" layoutY="392.0" text="12" translateX="396.0" translateY="-20.0" />
+            <Label layoutX="311.0" layoutY="392.0" text="13" translateX="432.0" translateY="-20.0" />
+            <Label layoutX="321.0" layoutY="392.0" text="14" translateX="468.0" translateY="-20.0" />
+            <Label layoutX="331.0" layoutY="392.0" text="15" translateX="504.0" translateY="-20.0" />
+            <Label layoutX="340.0" layoutY="392.0" text="16" translateX="540.0" translateY="-20.0" />
       </children>
     </AnchorPane>
   </children>
