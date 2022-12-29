@@ -80,6 +80,9 @@ public class Controller {
     @FXML
     private RadioButton step16;
 
+    @FXML
+    private Button tapButton;
+
     private Clip selectedClip;
 
     public void initialize() {
@@ -153,6 +156,15 @@ public class Controller {
 
         tempo.dial().setValueConverter(new DialBoundedIntegerConverter(30, 180));
         tempo.dial().setConvertedValue(90);
+
+        tapButton.pressedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+                if(selectedClip != null) {
+                    selectedClip.loop(1);
+                }
+            }
+        });
 
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");
