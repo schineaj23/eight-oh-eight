@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "com.asch.eoe.EightOhEight",
             "projectName": "eight-oh-eight_6e4ce540",
-            "vmArgs": "--module-path ${workspaceDir}\\lib\\javafx-sdk-19\\lib --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path C:\\Users\\drew\\Documents\\javafx-sdk-19\\lib --add-modules javafx.controls,javafx.fxml"
         },
         {
             "type": "java",
