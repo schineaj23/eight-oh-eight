@@ -51,13 +51,17 @@ public class EightOhEight extends Application{
             System.out.println("Line not supported!");
         }
 
-        for (Mixer.Info m : mixerInfo) {
-            System.out.printf("Mixer: %s\n========\n", m.getName());
-        }
-
         try {
             // TODO: detect default interface
-            mixer = AudioSystem.getMixer(mixerInfo[2]);
+            for (Mixer.Info m : mixerInfo) {
+                System.out.printf("Mixer: %s %s\n======== ", m.getName(), m.getDescription());
+                if (m.getName().contains("Primary Sound Driver")) {
+                    System.out.println("Found a suitable mixer!");
+                    mixer = AudioSystem.getMixer(m);
+                    break;
+                }
+                System.out.println();
+            }
 
             cowbellClip = (Clip) mixer.getLine(clipInfo);
             claveClip = (Clip) mixer.getLine(clipInfo);
