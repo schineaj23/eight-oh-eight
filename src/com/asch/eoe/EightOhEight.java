@@ -57,7 +57,7 @@ public class EightOhEight extends Application{
 
         try {
             // TODO: detect default interface
-            mixer = AudioSystem.getMixer(mixerInfo[5]);
+            mixer = AudioSystem.getMixer(mixerInfo[2]);
 
             cowbellClip = (Clip) mixer.getLine(clipInfo);
             claveClip = (Clip) mixer.getLine(clipInfo);

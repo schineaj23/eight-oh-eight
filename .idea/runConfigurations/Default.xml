@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Default" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.asch.eoe.EightOhEight" />
+    <module name="EightOhEight" />
+    <option name="VM_PARAMETERS" value="--module-path $ProjectFileDir$\lib\javafx-sdk-19\lib --add-modules=javafx.controls,javafx.fxml" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
