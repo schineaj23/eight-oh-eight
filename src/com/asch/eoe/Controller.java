@@ -157,12 +157,9 @@ public class Controller {
         tempo.dial().setValueConverter(new DialBoundedIntegerConverter(30, 180));
         tempo.dial().setConvertedValue(90);
 
-        tapButton.pressedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-                if(selectedClip != null) {
-                    selectedClip.loop(1);
-                }
+        tapButton.onActionProperty().set(e -> {
+            if(selectedClip != null) {
+                selectedClip.loop(1);
             }
         });
 
