@@ -1,8 +1,9 @@
 package com.asch.eoe;
 
+// Amplifies signal based off an envelope and a gain
 public class VoltageControlledAmplifier {
-    private Envelope envelope;
-    private double gain;
+    private final Envelope envelope;
+    private final double gain;
 
     public VoltageControlledAmplifier(Envelope envelope, double gain) {
         this.envelope = envelope;

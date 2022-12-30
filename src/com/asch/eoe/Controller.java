@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.effect.InnerShadow;
 
+// Controls the UI logic.
+// I hate how long this class is.
 public class Controller {
 
     @FXML

@@ -104,6 +104,7 @@ public class Sequencer extends Thread {
     @Override
     public void run() {
         // Have this continually run on the other thread
+        // This way it doesn't block user interaction
         while(true) {
             if(isPlaying)
                 stepProperty.setValue(0);

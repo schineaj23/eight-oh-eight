@@ -191,8 +191,7 @@ public class EightOhEight extends Application {
         assignClip(snare, snareClip);
     }
 
-    // TODO: implement sound mixing such that I can synthesize the handclap
-    // correctly
+    // TODO: implement sound mixing so I can synthesize the handclap correctly
     // Use this tutorial: https://www.youtube.com/watch?v=lG1h28gv1HU
     public static void createHandClap() {
         Sound handclap = new Sound(handclapClip);
