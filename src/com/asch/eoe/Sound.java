@@ -156,7 +156,6 @@ public class Sound {
     }
 
     // Write the buffered data to the line, only when we have the full signal.
-    // TODO: Refactor with Mixer API if needed, this may only work for one sound
     private void play(double sample) {
         if (sample < -1.0)
             sample = -1.0;

@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-public class EightOhEight extends Application{
+public class EightOhEight extends Application {
 
     private static SourceDataLine line;
 
@@ -34,6 +34,10 @@ public class EightOhEight extends Application{
     private static Mixer mixer;
 
     private static void assignClip(Sound sound, Clip clip) {
+        // When updating make sure that we are not modifying a clip that is currently open
+        if (clip.isOpen())
+            clip.close();
+
         try {
             clip.open(Configuration.FORMAT, sound.getData(), 0, sound.getBufferSize());
         } catch (LineUnavailableException e) {
@@ -93,7 +97,7 @@ public class EightOhEight extends Application{
     }
 
     private static void playScale(Sound sound) {
-        double[] c_major_scale = { 261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25 };
+        double[] c_major_scale = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25};
 
         for (double pitch : c_major_scale) {
             sound.generate(pitch);
@@ -126,7 +130,7 @@ public class EightOhEight extends Application{
     }
 
     // Leaving this here for later but it is complete.
-    private static void createCowbell() {
+    public static void createCowbell() {
         Sound cowbell = new Sound(cowbellClip);
         cowbell.addOscillator(new Square(545)).addOscillator(new Square(815));
 
@@ -143,18 +147,18 @@ public class EightOhEight extends Application{
         assignClip(cowbell, cowbellClip);
     }
 
-    private static void createBassDrum() {
+    public static void createBassDrum(double tone, double decay) {
         Sound bass = new Sound(bassClip);
-        bass.addOscillator(new Sine(50));
-        ExponentialEnvelope bassEnvelope = new ExponentialEnvelope(1, 0.0001, 0.8);
+        bass.addOscillator(new Sine(tone)); // 50
+        ExponentialEnvelope bassEnvelope = new ExponentialEnvelope(1, 0.0001, decay); // 0.8
         bass.setEnvelope(bassEnvelope);
-        bass.addFilter(new LowPassFilter(50));
+        bass.addFilter(new LowPassFilter(tone)); // 50
         bass.generate(2);
 
         assignClip(bass, bassClip);
     }
 
-    private static void createClave() {
+    public static void createClave() {
         Sound clave = new Sound(claveClip);
         clave.addOscillator(new Sine(1200));
         ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(1, 0.001, 0.05);
@@ -169,15 +173,17 @@ public class EightOhEight extends Application{
         assignClip(clave, claveClip);
     }
 
-    private static void createSnare() {
+    public static void createSnare(double tone, double snappy) {
+        System.out.printf("Generating Snare with Tone: %.0f and Snappy %.3f\n", tone, snappy);
+
         Sound snare = new Sound(snareClip);
-        snare.addOscillator(new Sine(89)).addOscillator(new Noise(0.12));
+        snare.addOscillator(new Sine(tone)).addOscillator(new Noise(0.12)); // 89
 
         // https://talkinmusic.com/snare-eq-phat-punchy-snare-eq/ tips for EQ'ing snares
         snare.addFilter(new LowPassFilter(1500));
         snare.addFilter(new HighPassFilter(60));
 
-        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(2, 0.0001, 0.06);
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(2, 0.0001, snappy);// 0.06
         snare.setAmplifier(new VoltageControlledAmplifier(snareEnvelope));
 
         snare.generate(0.5);
@@ -188,7 +194,7 @@ public class EightOhEight extends Application{
     // TODO: implement sound mixing such that I can synthesize the handclap
     // correctly
     // Use this tutorial: https://www.youtube.com/watch?v=lG1h28gv1HU
-    private static void createHandClap() {
+    public static void createHandClap() {
         Sound handclap = new Sound(handclapClip);
         handclap.setOscillator(new Noise(0.8));
 
@@ -213,10 +219,10 @@ public class EightOhEight extends Application{
 
         // TODO: put create for all, or have some clas that instantiates all objects and their controllers
         createCowbell();
+        createBassDrum(50, 0.8);
         createClave();
-        createBassDrum();
         createHandClap();
-        createSnare();
+        createSnare(89, 0.06);
 
         launch(args);
 

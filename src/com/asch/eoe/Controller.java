@@ -22,7 +22,20 @@ public class Controller {
     private DialControl bassLevel;
 
     @FXML
+    private DialControl bassTone;
+
+    @FXML
+    private DialControl bassDecay;
+
+
+    @FXML
     private DialControl snareLevel;
+
+    @FXML
+    private DialControl snareTone;
+
+    @FXML
+    private DialControl snareSnappy;
 
     @FXML
     private DialControl claveRimLevel;
@@ -216,6 +229,8 @@ public class Controller {
         } else {
             sequencer.addClipAtStep(selectedClip, id - 1);
         }
+
+        createSnareParameters();
     }
 
     private void initializeSequencer() {
@@ -375,6 +390,34 @@ public class Controller {
         });
         cowbellLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
             setClipVolume(EightOhEight.cowbellClip, newVal.floatValue());
+        });
+    }
+
+    private void createSnareParameters() {
+        int defaultTone = 89;
+        double defaultSnappy = 0.06;
+        int defaultSnappyInt = (int)(defaultSnappy * 10000);
+
+        snareTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 2));
+        snareTone.setConvertedValue(defaultTone);
+        snareTone.setOnMouseReleased(e -> {
+            if(sequencer.isPlaying()) {
+                sequencer.togglePlayState();
+                for(RadioButton b : stepRadioButtons)
+                    b.setEffect(null);
+            }
+            EightOhEight.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
+        });
+
+        snareSnappy.setValueConverter(new DialBoundedIntegerConverter(defaultSnappyInt / 2, defaultSnappyInt * 2));
+        snareSnappy.setConvertedValue(defaultSnappyInt);
+        snareSnappy.setOnMouseReleased(e -> {
+            if(sequencer.isPlaying()) {
+                sequencer.togglePlayState();
+                for(RadioButton b : stepRadioButtons)
+                    b.setEffect(null);
+            }
+            EightOhEight.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
         });
     }
 
