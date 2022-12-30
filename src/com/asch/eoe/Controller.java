@@ -151,7 +151,6 @@ public class Controller {
 
         startButton.onActionProperty().set(e -> {
             sequencer.togglePlayState();
-            System.out.println("start button onActionProperty");
 
             // Remove all effects after we stop
             if(!sequencer.isPlaying()) {
@@ -183,6 +182,7 @@ public class Controller {
             sequencer.clearSequence();
             for(RadioButton b : stepRadioButtons) {
                 b.setSelected(false);
+                b.setEffect(null);
             }
         });
     }
@@ -207,6 +207,16 @@ public class Controller {
         sequencer.step().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
+                // Since the sequencer runs on a separate thread
+                // It is possible for the value to change after we already paused
+                // So clear effects from all buttons to be safe
+                if(!sequencer.isPlaying()) {
+                    for (RadioButton b : stepRadioButtons) {
+                        b.setEffect(null);
+                    }
+                    return;
+                }
+
                 int val = newNumber.intValue();
 
                 if (val > 15)
