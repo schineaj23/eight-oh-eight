@@ -217,7 +217,6 @@ public class EightOhEight extends Application {
         System.out.println("808 now playing.");
         initAudio();
 
-        // TODO: put create for all, or have some clas that instantiates all objects and their controllers
         createCowbell();
         createBassDrum(50, 0.8);
         createClave();

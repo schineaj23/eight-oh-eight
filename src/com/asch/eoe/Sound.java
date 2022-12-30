@@ -120,8 +120,6 @@ public class Sound {
              */
             double sample = sampleOscillators(t) * gain;
 
-            // TODO: Put rest of mixing pipeline stack in here.
-
             if (envelope != null) {
                 sample = envelope.sample(sample, t);
             }
