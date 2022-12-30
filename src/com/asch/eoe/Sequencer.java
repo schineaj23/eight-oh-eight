@@ -3,9 +3,10 @@ package com.asch.eoe;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import javax.sound.midi.Sequence;
 import javax.sound.sampled.Clip;
 
-public class Sequencer {
+public class Sequencer extends Thread {
     // The nested ArrayList is for getting the clips to play at each step
     private ArrayList<ArrayList<Clip>> sequence = new ArrayList<>();
 
@@ -14,6 +15,8 @@ public class Sequencer {
     // NOTE: I separated these because I didn't want to search the nested arraylist
     // every time we change instruments to display
     private Hashtable<Clip, Integer> stepsForClip;
+
+    private int tempo;
 
     public class Steps {
         // Each of the indexes correspond to the mask for that step
@@ -26,6 +29,10 @@ public class Sequencer {
             sequence.add(new ArrayList<Clip>());
         }
         stepsForClip = new Hashtable<>();
+    }
+
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
     }
 
     public void addClipAtStep(Clip clip, int step) {
@@ -66,5 +73,24 @@ public class Sequencer {
             a.clear();
         }
         stepsForClip.clear();
+    }
+
+    @Override
+    public void run() {
+        if(Thread.interrupted())
+            return;
+        for (int i = 0; i < 16; i++) {
+            if(Thread.interrupted())
+                return;
+            ArrayList<Clip> clipsToPlay = sequence.get(i);
+            for (Clip c : clipsToPlay) {
+                c.loop(1);
+            }
+            try {
+                Thread.sleep(1000 * 60 / tempo);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

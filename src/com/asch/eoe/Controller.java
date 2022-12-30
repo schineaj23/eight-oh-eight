@@ -85,6 +85,8 @@ public class Controller {
 
     private Clip selectedClip;
 
+    private boolean playing = false;
+
     public void initialize() {
         RadioButton[] stepRadioButtons = { step1, step2, step3, step4, step5, step6, step7, step8, step9, step10,
                 step11, step12, step13, step14, step15, step16 };
@@ -146,16 +148,36 @@ public class Controller {
                 }
             }
         });
+
         registerStepCallbacks();
 
         startButton.onActionProperty().set(e -> {
+            if(!playing) {
+                System.out.println("Starting!");
+                sequencer.start();
+            }
+            else {
+                System.out.println("Stopping!");
+                sequencer.interrupt();
+            }
+            playing = !playing;
+
             System.out.println("start button onActionProperty");
-            EightOhEight.cowbellClip.loop(1);
+            //EightOhEight.cowbellClip.loop(1);
             // EightOhEight.accentClip.loop(1);
         });
 
         tempo.dial().setValueConverter(new DialBoundedIntegerConverter(30, 180));
         tempo.dial().setConvertedValue(90);
+        sequencer.setTempo(90);
+        tempo.dial().convertedValue().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                int newTempo = tempo.dial().convertedValue().intValue();
+                sequencer.setTempo(newTempo);
+                System.out.printf("Changed tempo to %d\n", newTempo);
+            }
+        });
 
         tapButton.onActionProperty().set(e -> {
             if(selectedClip != null) {
