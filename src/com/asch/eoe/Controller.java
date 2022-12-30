@@ -1,7 +1,6 @@
 package com.asch.eoe;
 
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.Control;
 import javax.sound.sampled.FloatControl;
 
 import com.asch.eoe.Sequencer.Steps;
@@ -231,6 +230,7 @@ public class Controller {
         }
 
         createSnareParameters();
+        createBassParameters();
     }
 
     private void initializeSequencer() {
@@ -418,6 +418,34 @@ public class Controller {
                     b.setEffect(null);
             }
             EightOhEight.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
+        });
+    }
+
+    private void createBassParameters() {
+        int defaultTone = 50;
+        double defaultDecay = 0.8;
+        int defaultDecayInt = (int)(defaultDecay * 10000);
+
+        bassTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 4));
+        bassTone.setConvertedValue(defaultTone);
+        bassTone.setOnMouseReleased(e -> {
+            if(sequencer.isPlaying()) {
+                sequencer.togglePlayState();
+                for(RadioButton b : stepRadioButtons)
+                    b.setEffect(null);
+            }
+            EightOhEight.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
+        });
+
+        bassDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
+        bassDecay.setConvertedValue(defaultDecayInt);
+        bassDecay.setOnMouseReleased(e -> {
+            if(sequencer.isPlaying()) {
+                sequencer.togglePlayState();
+                for(RadioButton b : stepRadioButtons)
+                    b.setEffect(null);
+            }
+            EightOhEight.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
         });
     }
 
