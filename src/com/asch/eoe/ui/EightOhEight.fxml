@@ -460,6 +460,7 @@
             <Label layoutX="331.0" layoutY="392.0" text="15" translateX="504.0" translateY="-20.0" />
             <Label layoutX="340.0" layoutY="392.0" text="16" translateX="540.0" translateY="-20.0" />
             <Button fx:id="tapButton" layoutX="930.0" layoutY="382.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="41.0" text="TAP" />
+            <Button fx:id="clearButton" layoutX="23.0" layoutY="404.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="CLEAR" />
       </children>
     </AnchorPane>
   </children>

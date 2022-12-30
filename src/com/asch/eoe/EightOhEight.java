@@ -6,7 +6,6 @@ import com.asch.eoe.envelopes.ADSREnvelope;
 import com.asch.eoe.envelopes.ExponentialEnvelope;
 import com.asch.eoe.filters.HighPassFilter;
 import com.asch.eoe.filters.LowPassFilter;
-import com.asch.eoe.filters.Resonator;
 import com.asch.eoe.oscillators.Noise;
 import com.asch.eoe.oscillators.Saw;
 import com.asch.eoe.oscillators.Sine;
@@ -18,6 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class EightOhEight extends Application{
 
@@ -35,17 +36,21 @@ public class EightOhEight extends Application{
         try {
             clip.open(Configuration.FORMAT, sound.getData(), 0, sound.getBufferSize());
         } catch (LineUnavailableException e) {
-            System.out.printf("%s could not open line!", sound.toString());
+            System.out.printf("%s could not open line!\n", sound);
         }
+    }
 
+    public static void playClip(Clip clip) {
+        clip.stop();
+        clip.flush();
         clip.setFramePosition(0);
-        clip.setLoopPoints(0, -1);
+        clip.start();
     }
 
     private static void initAudio() {
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, Configuration.FORMAT);
         DataLine.Info clipInfo = new DataLine.Info(Clip.class, Configuration.FORMAT);
-        Mixer.Info mixerInfo[] = AudioSystem.getMixerInfo();
+        Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
 
         if (!AudioSystem.isLineSupported(info)) {
             System.out.println("Line not supported!");
@@ -218,12 +223,21 @@ public class EightOhEight extends Application{
         System.out.println("Cleaning up...");
         cowbellClip.drain();
         claveClip.drain();
-        line.drain();
+        bassClip.drain();
+        handclapClip.drain();
+        snareClip.drain();
+
+        cowbellClip.close();
+        claveClip.close();
+        bassClip.close();
+        handclapClip.close();
+        snareClip.close();
+        line.close();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("ui/EightOhEight.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ui/EightOhEight.fxml")));
         primaryStage.setTitle("EightOhEight");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);

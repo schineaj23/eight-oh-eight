@@ -12,8 +12,8 @@ public class Sound {
     private SourceDataLine line;
     private Clip clip;
 
-    private ArrayList<Oscillator> oscillators = new ArrayList<>();
-    private ArrayList<Filter> filters = new ArrayList<>();
+    private final ArrayList<Oscillator> oscillators = new ArrayList<>();
+    private final ArrayList<Filter> filters = new ArrayList<>();
     private Envelope envelope;
     private VoltageControlledAmplifier amplifier;
     private double gain = 1;

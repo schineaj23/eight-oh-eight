@@ -11,14 +11,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.layout.HBox;
+import javafx.scene.effect.InnerShadow;
 
 public class Controller {
-
-    @FXML
-    private Label label;
 
     @FXML
     private Button startButton;
@@ -28,9 +24,6 @@ public class Controller {
 
     @FXML
     private DialControlLabelled tempo;
-
-    @FXML
-    private HBox stepContainer;
 
     @FXML
     private RadioButton step1;
@@ -83,17 +76,24 @@ public class Controller {
     @FXML
     private Button tapButton;
 
+    @FXML
+    private Button clearButton;
+
     private Clip selectedClip;
 
-    private boolean playing = false;
+    private RadioButton[] stepRadioButtons;
+
+    private final Sequencer sequencer = new Sequencer();
 
     public void initialize() {
-        RadioButton[] stepRadioButtons = { step1, step2, step3, step4, step5, step6, step7, step8, step9, step10,
-                step11, step12, step13, step14, step15, step16 };
+        stepRadioButtons = new RadioButton[]{step1, step2, step3, step4, step5, step6, step7, step8, step9, step10,
+                step11, step12, step13, step14, step15, step16};
+
+        initializeSequencer();
+        registerStepCallbacks();
 
         instrumentSelect.setTickCount(11);
         instrumentSelect.setValueConverter(new DialBoundedIntegerConverter(0, 11));
-
         instrumentSelect.convertedValue().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -149,22 +149,16 @@ public class Controller {
             }
         });
 
-        registerStepCallbacks();
-
         startButton.onActionProperty().set(e -> {
-            if(!playing) {
-                System.out.println("Starting!");
-                sequencer.start();
-            }
-            else {
-                System.out.println("Stopping!");
-                sequencer.interrupt();
-            }
-            playing = !playing;
-
+            sequencer.togglePlayState();
             System.out.println("start button onActionProperty");
-            //EightOhEight.cowbellClip.loop(1);
-            // EightOhEight.accentClip.loop(1);
+
+            // Remove all effects after we stop
+            if(!sequencer.isPlaying()) {
+                for(RadioButton b : stepRadioButtons) {
+                    b.setEffect(null);
+                }
+            }
         });
 
         tempo.dial().setValueConverter(new DialBoundedIntegerConverter(30, 180));
@@ -180,18 +174,18 @@ public class Controller {
         });
 
         tapButton.onActionProperty().set(e -> {
-            if(selectedClip != null) {
-                selectedClip.loop(1);
+            if (selectedClip != null) {
+                EightOhEight.playClip(selectedClip);
             }
         });
 
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        // label.setText("Hello, JavaFX " + javafxVersion + "\nRunning on Java " +
-        // javaVersion + ".");
+        clearButton.onActionProperty().set(e -> {
+            sequencer.clearSequence();
+            for(RadioButton b : stepRadioButtons) {
+                b.setSelected(false);
+            }
+        });
     }
-
-    private Sequencer sequencer = new Sequencer();
 
     private void updateSequence(int id, boolean value) {
         if (selectedClip == null) {
@@ -206,8 +200,27 @@ public class Controller {
         }
     }
 
+    private void initializeSequencer() {
+        // Start the sequencer thread once the UI is up and running.
+        sequencer.start();
+
+        sequencer.step().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
+                int val = newNumber.intValue();
+
+                if (val > 15)
+                    return;
+
+                stepRadioButtons[val].setEffect(new InnerShadow());
+                // Set the previously highlighted step marker to default
+                stepRadioButtons[(val == 0) ? 15 : val - 1].setEffect(null);
+            }
+        });
+    }
+
     private void registerStepCallbacks() {
-        System.out.println("step buttons");
+        System.out.println("Registering Step Callbacks");
         step1.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
