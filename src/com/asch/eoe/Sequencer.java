@@ -117,14 +117,16 @@ public class Sequencer extends Thread {
                 try {
                     Thread.sleep(1000 * 60 / tempo);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Sequencer run() Interrupted. Returning...");
+                    return;
                 }
                 stepProperty.setValue(stepProperty.getValue()+1);
             }
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                System.out.println("Sequencer run() Interrupted. Returning...");
+                return;
             }
         }
     }

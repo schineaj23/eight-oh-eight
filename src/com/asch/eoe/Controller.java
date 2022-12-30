@@ -328,4 +328,8 @@ public class Controller {
             }
         });
     }
+
+    public void shutdown() {
+        sequencer.interrupt();
+    }
 }

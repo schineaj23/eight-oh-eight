@@ -13,6 +13,7 @@ import com.asch.eoe.oscillators.Square;
 import com.asch.eoe.oscillators.Triangle;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -237,10 +238,16 @@ public class EightOhEight extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ui/EightOhEight.fxml")));
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("ui/EightOhEight.fxml")));
+        Parent root = loader.load();
         primaryStage.setTitle("EightOhEight");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
+        Controller controller = loader.getController();
+        primaryStage.setOnHidden(e -> {
+            controller.shutdown();
+            Platform.exit();
+        });
         primaryStage.show();
     }
 }
