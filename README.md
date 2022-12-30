@@ -34,15 +34,3 @@ RESOURCES
 PROGRAMMING RESOURCES
 ====
 - https://docs.oracle.com/javase/tutorial/sound/index.html <- For sound
-
-
-IDEAL ERGONOMICS
-====
-I want the way of creating each sound similar to a factory/builder interface
-For example:
-```java
-SoundBuilder builder = new SoundBuilder();
-builder.oscillator(Sine.class).add(Square.class).lowPassFilter(500).delay(10);
-Sound cowbell = builder.sound();
-```
-Not sure if this is the best method of doing things...
