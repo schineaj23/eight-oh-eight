@@ -1,6 +1,8 @@
 package com.asch.eoe;
 
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.Control;
+import javax.sound.sampled.FloatControl;
 
 import com.asch.eoe.Sequencer.Steps;
 import com.io7m.digal.core.DialBoundedIntegerConverter;
@@ -15,6 +17,21 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.effect.InnerShadow;
 
 public class Controller {
+
+    @FXML
+    private DialControl bassLevel;
+
+    @FXML
+    private DialControl snareLevel;
+
+    @FXML
+    private DialControl claveRimLevel;
+
+    @FXML
+    private DialControl maracaClapLevel;
+
+    @FXML
+    private DialControl cowbellLevel;
 
     @FXML
     private Button startButton;
@@ -91,6 +108,7 @@ public class Controller {
 
         initializeSequencer();
         registerStepCallbacks();
+        registerLevelCallbacks();
 
         instrumentSelect.setTickCount(11);
         instrumentSelect.setValueConverter(new DialBoundedIntegerConverter(0, 11));
@@ -153,8 +171,8 @@ public class Controller {
             sequencer.togglePlayState();
 
             // Remove all effects after we stop
-            if(!sequencer.isPlaying()) {
-                for(RadioButton b : stepRadioButtons) {
+            if (!sequencer.isPlaying()) {
+                for (RadioButton b : stepRadioButtons) {
                     b.setEffect(null);
                 }
             }
@@ -180,7 +198,7 @@ public class Controller {
 
         clearButton.onActionProperty().set(e -> {
             sequencer.clearSequence();
-            for(RadioButton b : stepRadioButtons) {
+            for (RadioButton b : stepRadioButtons) {
                 b.setSelected(false);
                 b.setEffect(null);
             }
@@ -210,7 +228,7 @@ public class Controller {
                 // Since the sequencer runs on a separate thread
                 // It is possible for the value to change after we already paused
                 // So clear effects from all buttons to be safe
-                if(!sequencer.isPlaying()) {
+                if (!sequencer.isPlaying()) {
                     for (RadioButton b : stepRadioButtons) {
                         b.setEffect(null);
                     }
@@ -326,6 +344,37 @@ public class Controller {
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
                 updateSequence(16, value);
             }
+        });
+    }
+
+    private void setClipVolume(Clip clip, float value) {
+        // https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(20f * (float) Math.log10(value));
+    }
+
+    private void registerLevelCallbacks() {
+        System.out.println("Registering Clip Level Callbacks");
+        bassLevel.setRawValue(2);
+        snareLevel.setRawValue(0.5);
+        claveRimLevel.setRawValue(0.5);
+        maracaClapLevel.setRawValue(0.5);
+        cowbellLevel.setRawValue(0.5);
+
+        bassLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            setClipVolume(EightOhEight.bassClip, newVal.floatValue());
+        });
+        snareLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            setClipVolume(EightOhEight.snareClip, newVal.floatValue());
+        });
+        claveRimLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            setClipVolume(EightOhEight.claveClip, newVal.floatValue());
+        });
+        maracaClapLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            setClipVolume(EightOhEight.handclapClip, newVal.floatValue());
+        });
+        cowbellLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            setClipVolume(EightOhEight.cowbellClip, newVal.floatValue());
         });
     }
 
