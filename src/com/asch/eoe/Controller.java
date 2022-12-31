@@ -124,6 +124,10 @@ public class Controller {
         registerStepCallbacks();
         registerLevelCallbacks();
 
+        // Tunable properties for instrument
+        createSnareParameters();
+        createBassParameters();
+
         instrumentSelect.setTickCount(11);
         instrumentSelect.setValueConverter(new DialBoundedIntegerConverter(0, 11));
         instrumentSelect.convertedValue().addListener(new ChangeListener<Number>() {
@@ -175,7 +179,7 @@ public class Controller {
                 for (int i = 0; i < 16; i++) {
                     int state = (steps & Steps.encodedSteps[i]);
                     boolean doAction = state > 0;
-                    System.out.printf("%s state: %d, doAction %b\n", selectedClip, state, doAction);
+                    System.out.printf("Instrument: %d state: %d, doAction %b\n", val, state, doAction);
                     stepRadioButtons[i].setSelected(doAction);
                 }
             }
@@ -230,9 +234,6 @@ public class Controller {
         } else {
             sequencer.addClipAtStep(selectedClip, id - 1);
         }
-
-        createSnareParameters();
-        createBassParameters();
     }
 
     private void initializeSequencer() {
