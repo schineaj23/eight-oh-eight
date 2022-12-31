@@ -84,7 +84,7 @@ public class Sequencer extends Thread {
         sequence.get(step).remove(clip);
 
         int clips = stepsForClip.getOrDefault(clip, 0);
-        clips &= Steps.encodedSteps[step];
+        clips &= ~Steps.encodedSteps[step];
         stepsForClip.put(clip, clips);
     };
 

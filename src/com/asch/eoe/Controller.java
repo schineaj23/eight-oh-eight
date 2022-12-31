@@ -173,10 +173,10 @@ public class Controller {
 
                 int steps = sequencer.getStepsForClip(selectedClip);
                 for (int i = 0; i < 16; i++) {
-                    boolean currentState = stepRadioButtons[i].selectedProperty().get();
-                    boolean doAction = (steps & Steps.encodedSteps[i]) != 0;
-                    if (currentState != doAction)
-                        stepRadioButtons[i].setSelected(!currentState);
+                    int state = (steps & Steps.encodedSteps[i]);
+                    boolean doAction = state > 0;
+                    System.out.printf("%s state: %d, doAction %b\n", selectedClip, state, doAction);
+                    stepRadioButtons[i].setSelected(doAction);
                 }
             }
         });
