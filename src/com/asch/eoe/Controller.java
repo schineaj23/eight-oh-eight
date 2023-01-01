@@ -223,9 +223,9 @@ public class Controller {
         }
 
         if (value) {
-            sequencer.removeClipAtStep(selectedClip, id - 1);
-        } else {
             sequencer.addClipAtStep(selectedClip, id - 1);
+        } else {
+            sequencer.removeClipAtStep(selectedClip, id - 1);
         }
     }
 
@@ -261,37 +261,37 @@ public class Controller {
     private void registerStepCallbacks() {
         System.out.println("Registering Step Callbacks");
         step1.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(1, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(1, value));
         step2.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(2, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(2, value));
         step3.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(3, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(3, value));
         step4.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(4, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(4, value));
         step5.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(5, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(5, value));
         step6.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(6, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(6, value));
         step7.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(7, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(7, value));
         step8.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(8, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(8, value));
         step9.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(9, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(9, value));
         step10.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(10, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(10, value));
         step11.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(11, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(11, value));
         step12.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(12, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(12, value));
         step13.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(13, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(13, value));
         step14.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(14, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(14, value));
         step15.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(15, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(15, value));
         step16.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(16, value));
+                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(16, value));
     }
 
     private void registerLevelCallbacks() {

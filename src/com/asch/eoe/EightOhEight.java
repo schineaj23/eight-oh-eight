@@ -24,7 +24,6 @@ public class EightOhEight extends Application {
 
         try {
             for (Mixer.Info m : mixerInfo) {
-                // System.out.printf("Mixer: %s %s\n======== ", m.getName(), m.getDescription());
                 if (m.getName().contains("Primary Sound Driver")) {
                     System.out.println("Found a suitable mixer!");
                     mixer = AudioSystem.getMixer(m);
