@@ -20,6 +20,9 @@ import javafx.scene.effect.InnerShadow;
 public class Controller {
 
     @FXML
+    private DialControl accentLevel;
+
+    @FXML
     private DialControl bassLevel;
 
     @FXML
@@ -27,7 +30,6 @@ public class Controller {
 
     @FXML
     private DialControl bassDecay;
-
 
     @FXML
     private DialControl snareLevel;
@@ -117,8 +119,8 @@ public class Controller {
     private final Sequencer sequencer = new Sequencer();
 
     public void initialize() {
-        stepRadioButtons = new RadioButton[]{step1, step2, step3, step4, step5, step6, step7, step8, step9, step10,
-                step11, step12, step13, step14, step15, step16};
+        stepRadioButtons = new RadioButton[] { step1, step2, step3, step4, step5, step6, step7, step8, step9, step10,
+                step11, step12, step13, step14, step15, step16 };
 
         initializeSequencer();
         registerStepCallbacks();
@@ -267,102 +269,22 @@ public class Controller {
 
     private void registerStepCallbacks() {
         System.out.println("Registering Step Callbacks");
-        step1.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(1, value);
-            }
-        });
-        step2.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(2, value);
-            }
-        });
-        step3.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(3, value);
-            }
-        });
-        step4.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(4, value);
-            }
-        });
-        step5.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(5, value);
-            }
-        });
-        step6.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(6, value);
-            }
-        });
-        step7.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(7, value);
-            }
-        });
-        step8.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(8, value);
-            }
-        });
-        step9.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(9, value);
-            }
-        });
-        step10.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(10, value);
-            }
-        });
-        step11.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(11, value);
-            }
-        });
-        step12.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(12, value);
-            }
-        });
-        step13.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(13, value);
-            }
-        });
-        step14.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(14, value);
-            }
-        });
-        step15.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(15, value);
-            }
-        });
-        step16.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean value, Boolean arg2) {
-                updateSequence(16, value);
-            }
-        });
+        step1.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(1, value));
+        step2.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(2, value));
+        step3.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(3, value));
+        step4.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(4, value));
+        step5.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(5, value));
+        step6.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(6, value));
+        step7.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(7, value));
+        step8.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(8, value));
+        step9.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(9, value));
+        step10.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(10, value));
+        step11.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(11, value));
+        step12.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(12, value));
+        step13.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(13, value));
+        step14.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(14, value));
+        step15.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(15, value));
+        step16.selectedProperty().addListener((ChangeListener<Boolean>) (observableValue, value, arg2) -> updateSequence(16, value));
     }
 
     private void setClipVolume(Clip clip, float value) {
@@ -399,56 +321,60 @@ public class Controller {
     private void createSnareParameters() {
         int defaultTone = 89;
         double defaultSnappy = 0.06;
-        int defaultSnappyInt = (int)(defaultSnappy * 10000);
+        int defaultSnappyInt = (int) (defaultSnappy * 10000);
 
         snareTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 2));
         snareTone.setConvertedValue(defaultTone);
         snareTone.setOnMouseReleased(e -> {
-            if(sequencer.isPlaying()) {
+            if (sequencer.isPlaying()) {
                 sequencer.togglePlayState();
-                for(RadioButton b : stepRadioButtons)
+                for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            EightOhEight.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
+            EightOhEight.createSnare(snareTone.convertedValue().doubleValue(),
+                    (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
         });
 
         snareSnappy.setValueConverter(new DialBoundedIntegerConverter(defaultSnappyInt / 2, defaultSnappyInt * 2));
         snareSnappy.setConvertedValue(defaultSnappyInt);
         snareSnappy.setOnMouseReleased(e -> {
-            if(sequencer.isPlaying()) {
+            if (sequencer.isPlaying()) {
                 sequencer.togglePlayState();
-                for(RadioButton b : stepRadioButtons)
+                for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            EightOhEight.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
+            EightOhEight.createSnare(snareTone.convertedValue().doubleValue(),
+                    (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
         });
     }
 
     private void createBassParameters() {
         int defaultTone = 50;
         double defaultDecay = 0.8;
-        int defaultDecayInt = (int)(defaultDecay * 10000);
+        int defaultDecayInt = (int) (defaultDecay * 10000);
 
         bassTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 4));
         bassTone.setConvertedValue(defaultTone);
         bassTone.setOnMouseReleased(e -> {
-            if(sequencer.isPlaying()) {
+            if (sequencer.isPlaying()) {
                 sequencer.togglePlayState();
-                for(RadioButton b : stepRadioButtons)
+                for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            EightOhEight.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
+            EightOhEight.createBassDrum(bassTone.convertedValue().doubleValue(),
+                    bassDecay.convertedValue().doubleValue() / 10000f);
         });
 
         bassDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
         bassDecay.setConvertedValue(defaultDecayInt);
         bassDecay.setOnMouseReleased(e -> {
-            if(sequencer.isPlaying()) {
+            if (sequencer.isPlaying()) {
                 sequencer.togglePlayState();
-                for(RadioButton b : stepRadioButtons)
+                for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            EightOhEight.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
+            EightOhEight.createBassDrum(bassTone.convertedValue().doubleValue(),
+                    bassDecay.convertedValue().doubleValue() / 10000f);
         });
     }
 
