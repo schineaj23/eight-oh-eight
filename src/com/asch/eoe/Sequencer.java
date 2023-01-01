@@ -104,7 +104,7 @@ public class Sequencer extends Thread {
     @Override
     public void run() {
         // Have this continually run on the other thread
-        // This way it doesn't block user interaction
+        // So it doesn't block user interaction
         while(true) {
             if(isPlaying)
                 stepProperty.setValue(0);
@@ -112,11 +112,11 @@ public class Sequencer extends Thread {
             while(isPlaying && stepProperty.getValue() < 16) {
                 ArrayList<Clip> clipsToPlay = sequence.get(stepProperty.getValue());
                 for(Clip c : clipsToPlay) {
-                    EightOhEight.playClip(c);
+                    Instruments.playClip(c);
                 }
 
                 try {
-                    Thread.sleep(1000 * 60 / tempo);
+                    Thread.sleep(1000 * 60 / (tempo * 4L));
                 } catch (InterruptedException e) {
                     System.out.println("Sequencer run() Interrupted. Returning...");
                     return;

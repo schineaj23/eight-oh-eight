@@ -2,29 +2,15 @@ package com.asch.eoe;
 
 import java.util.ArrayList;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.SourceDataLine;
-
 public class Sound {
     private byte[] buffer;
     private int bufferSize = 0;
-
-    private SourceDataLine line;
-    private Clip clip;
 
     private final ArrayList<Oscillator> oscillators = new ArrayList<>();
     private final ArrayList<Filter> filters = new ArrayList<>();
     private Envelope envelope;
     private VoltageControlledAmplifier amplifier;
     private double gain = 1;
-
-    public Sound(SourceDataLine line) {
-        this.line = line;
-    }
-
-    public Sound(Clip clip) {
-        this.clip = clip;
-    }
 
     // "set" Oscillator implies that we only want one oscillator, so clear the list
     public Sound setOscillator(Oscillator oscillator) {
@@ -103,13 +89,7 @@ public class Sound {
     // This method generates the values of buffer for the signal
     public void generate(double duration) {
         // Initialize our buffer for generation
-        // If we are using the Clip API, then make the buffer size correspond to the duration
-        if (line == null) {
-            buffer = new byte[(int) (Configuration.BYTES_PER_SAMPLE * duration * Configuration.SAMPLE_RATE)];
-        } else {
-            // Or else, use standard buffer size for Line
-            buffer = new byte[Configuration.SAMPLE_BUFFER_SIZE * Configuration.BYTES_PER_SAMPLE];
-        }
+        buffer = new byte[(int) (Configuration.BYTES_PER_SAMPLE * duration * Configuration.SAMPLE_RATE)];
 
         for (double t = 0; t <= Configuration.SAMPLE_RATE * duration; t++) {
             /*
@@ -130,13 +110,7 @@ public class Sound {
                 sample = amplifier.sample(sample, t);
             }
 
-            // TODO: remove me once every sound is finished, and testing is over
-            // this checks if we are using Clip API or Line API
-            if (line == null) {
-                encode(sample);
-            } else {
-                play(sample);
-            }
+            encode(sample);
         }
     }
 
@@ -151,31 +125,6 @@ public class Sound {
 
     public void generateWithFrequency(double freq) {
         generateWithFrequency(freq, 1);
-    }
-
-    // Write the buffered data to the line, only when we have the full signal.
-    private void play(double sample) {
-        if (sample < -1.0)
-            sample = -1.0;
-        if (sample > +1.0)
-            sample = +1.0;
-
-        short s = (short) (Configuration.MAX_16_BIT * sample);
-
-        if (sample == 1.0)
-            s = Short.MAX_VALUE;
-
-        // Convert the sample (a double from -1.0 to 1.0)
-        // To a short value (-32767 to 32767) which is the raw data sent to the line
-        // Since we specified that our audio format is little endian, put first byte of
-        // sample in first index, then bit shift right by 8 and grab second byte
-        buffer[bufferSize++] = (byte) s;
-        buffer[bufferSize++] = (byte) (s >> 8);
-
-        if (bufferSize >= buffer.length) {
-            line.write(buffer, 0, buffer.length);
-            bufferSize = 0;
-        }
     }
 
     private void encode(double sample) {
