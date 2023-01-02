@@ -74,14 +74,14 @@ public class Sound {
         return sample;
     }
 
-    private double applyFilters(double sample, double t) {
+    private double applyFilters(double sample) {
         if (filters.isEmpty())
             return sample;
 
         // Pipe the output from filter to next filter
         double lastSample = sample;
         for (Filter f : filters) {
-            lastSample = f.sample(lastSample, t);
+            lastSample = f.sample(lastSample);
         }
         return lastSample;
     }
@@ -104,7 +104,7 @@ public class Sound {
                 sample = envelope.sample(sample, t);
             }
 
-            sample = applyFilters(sample, t);
+            sample = applyFilters(sample);
 
             if (amplifier != null) {
                 sample = amplifier.sample(sample, t);

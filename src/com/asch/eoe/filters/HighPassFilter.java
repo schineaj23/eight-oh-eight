@@ -3,7 +3,7 @@ package com.asch.eoe.filters;
 import com.asch.eoe.Configuration;
 import com.asch.eoe.Filter;
 
-public class HighPassFilter extends Filter {
+public class HighPassFilter implements Filter {
     private double previousSample = 0;
     private double previousInput = 0;
     private double alpha;
@@ -19,7 +19,7 @@ public class HighPassFilter extends Filter {
     }
 
     @Override
-    public double sample(double input, double t) {
+    public double sample(double input) {
         double sample = alpha * previousSample + alpha * (input - previousInput);
         previousSample = sample;
         previousInput = input;
