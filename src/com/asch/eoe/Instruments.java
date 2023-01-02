@@ -8,11 +8,10 @@ import javax.sound.sampled.Mixer;
 
 import com.asch.eoe.envelopes.ADSREnvelope;
 import com.asch.eoe.envelopes.ExponentialEnvelope;
+import com.asch.eoe.filters.BandPassFilter;
 import com.asch.eoe.filters.HighPassFilter;
 import com.asch.eoe.filters.LowPassFilter;
-import com.asch.eoe.oscillators.Noise;
-import com.asch.eoe.oscillators.Sine;
-import com.asch.eoe.oscillators.Square;
+import com.asch.eoe.oscillators.*;
 
 
 // I'm not happy about how this turned out.
@@ -27,6 +26,8 @@ public class Instruments {
     public static Clip handclapClip;
     public static Clip snareClip;
     public static Clip bassClip;
+
+    public static Clip cymbalClip;
 
     private static void assignClip(Sound sound, Clip clip) {
         // When updating make sure that we are not modifying a clip that is currently open
@@ -53,6 +54,7 @@ public class Instruments {
         createClave();
         createHandClap();
         createSnare(89, 0.06);
+        createCymbal(102.8, 0.7);
     }
 
     public static void assignClipInformation(Mixer mixer, DataLine.Info clipInfo) {
@@ -62,7 +64,8 @@ public class Instruments {
             handclapClip = (Clip) mixer.getLine(clipInfo);
             snareClip = (Clip) mixer.getLine(clipInfo);
             bassClip = (Clip) mixer.getLine(clipInfo);
-        } catch(LineUnavailableException e) {
+            cymbalClip = (Clip) mixer.getLine(clipInfo);
+        } catch (LineUnavailableException e) {
             System.out.println("assignClipInformation() failed!");
         }
     }
@@ -73,12 +76,14 @@ public class Instruments {
         bassClip.drain();
         handclapClip.drain();
         snareClip.drain();
+        cymbalClip.drain();
 
         cowbellClip.close();
         claveClip.close();
         bassClip.close();
         handclapClip.close();
         snareClip.close();
+        cymbalClip.close();
 
         System.out.println("Instruments.shutdown() successful");
     }
@@ -169,5 +174,48 @@ public class Instruments {
         handclap.generate(0.4);
 
         assignClip(handclap, handclapClip);
+    }
+
+    // I tried. I really tried.
+    public static void createCymbal(double masterFreq, double decay) {
+        Sound cymbal = new Sound();
+
+        Square masterOsc = new Square(masterFreq);
+        masterOsc.setGain(0.1);
+        Square slaveOsc1 = new Square(masterFreq * 1.1414);
+        slaveOsc1.setGain(0.1);
+        Square slaveOsc2 = new Square(masterFreq * 1.1962);
+        slaveOsc2.setGain(0.1);
+        Square slaveOsc3 = new Square(masterFreq * 2.1430);
+        slaveOsc3.setGain(0.1);
+        Square slaveOsc4 = new Square(masterFreq * 2.4961);
+        slaveOsc4.setGain(0.1);
+        Square slaveOsc5 = new Square(masterFreq * 2.0558);
+        slaveOsc5.setGain(0.1);
+
+        cymbal.addOscillator(masterOsc)
+                .addOscillator(slaveOsc1)
+                .addOscillator(slaveOsc2)
+                .addOscillator(slaveOsc3)
+                .addOscillator(slaveOsc4)
+                .addOscillator(slaveOsc5)
+                .addOscillator(new Noise(0.2));
+
+        cymbal.addFilter(new BandPassFilter(4430))
+                .addFilter(new HighPassFilter(3730))
+                .addFilter(new BandPassFilter(6270))
+                .addFilter(new HighPassFilter(2640))
+                .addFilter(new HighPassFilter(1980));
+
+        ADSREnvelope cymbalEnvelope = new ADSREnvelope(0.005, 0.051, 0.8, 0.5);
+        cymbalEnvelope.setSustainDuration(0.445);
+        ExponentialEnvelope ampEnvelope = new ExponentialEnvelope(1, 0.001, decay);
+
+        cymbal.setEnvelope(ampEnvelope);
+        //cymbal.setAmplifier(new VoltageControlledAmplifier(ampEnvelope));
+
+        cymbal.generate(1);
+
+        assignClip(cymbal, cymbalClip);
     }
 }

@@ -16,6 +16,6 @@ public class Triangle extends Oscillator {
     public double sample(double t) {
         double p = Configuration.SAMPLE_RATE / freq * 2;
         double saw = 2 * (t / p - Math.floor(0.5 + t / p));
-        return 2 * Math.abs(saw) - 1;
+        return (2 * Math.abs(saw) - 1) * gain;
     }
 }

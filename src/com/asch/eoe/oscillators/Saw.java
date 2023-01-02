@@ -15,6 +15,6 @@ public class Saw extends Oscillator {
     @Override
     public double sample(double t) {
         double p = Configuration.SAMPLE_RATE / freq * 2;
-        return 2 * (t / p - Math.floor(0.5 + t / p));
+        return 2 * (t / p - Math.floor(0.5 + t / p)) * gain;
     }
 }

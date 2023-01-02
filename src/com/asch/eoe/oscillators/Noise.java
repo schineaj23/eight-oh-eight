@@ -9,7 +9,6 @@ import com.asch.eoe.Oscillator;
 // I implemented it as an oscillator rather than a filter
 public class Noise extends Oscillator {
     private final Random rand;
-    private double gain = 1;
 
     public Noise() {
         rand = new Random();

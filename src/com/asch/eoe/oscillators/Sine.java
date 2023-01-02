@@ -14,6 +14,6 @@ public class Sine extends Oscillator {
 
     @Override
     public double sample(double t) {
-        return 0.5 * Math.sin(Math.PI * freq * t / Configuration.SAMPLE_RATE);
+        return 0.5 * Math.sin(Math.PI * freq * t / Configuration.SAMPLE_RATE) * gain;
     }
 }

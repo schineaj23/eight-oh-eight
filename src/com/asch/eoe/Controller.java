@@ -49,6 +49,15 @@ public class Controller {
     private DialControl cowbellLevel;
 
     @FXML
+    private DialControl cymbalTone;
+
+    @FXML
+    private DialControl cymbalDecay;
+
+    @FXML
+    private DialControl cymbalLevel;
+
+    @FXML
     private Button startButton;
 
     @FXML
@@ -128,6 +137,7 @@ public class Controller {
         // Tunable properties for instrument
         createSnareParameters();
         createBassParameters();
+        createCymbalParameters();
 
         instrumentSelect.setTickCount(11);
         instrumentSelect.setValueConverter(new DialBoundedIntegerConverter(0, 11));
@@ -158,6 +168,11 @@ public class Controller {
                 case 8: {
                     selectedClip = Instruments.cowbellClip;
                     System.out.println("Selected Cowbell");
+                    break;
+                }
+                case 9: {
+                    selectedClip = Instruments.cymbalClip;
+                    System.out.println("Selected Cymbal");
                     break;
                 }
                 default: {
@@ -214,6 +229,9 @@ public class Controller {
                 b.setEffect(null);
             }
         });
+
+        // FIXME: remove this once done testing
+        instrumentSelect.setConvertedValue(9);
     }
 
     private void updateSequence(int id, boolean value) {
@@ -301,6 +319,7 @@ public class Controller {
         claveRimLevel.setRawValue(0.5);
         maracaClapLevel.setRawValue(0.5);
         cowbellLevel.setRawValue(0.5);
+        cymbalLevel.setRawValue(0.5);
 
         bassLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
             Instruments.setClipVolume(Instruments.bassClip, newVal.floatValue());
@@ -316,6 +335,9 @@ public class Controller {
         });
         cowbellLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
             Instruments.setClipVolume(Instruments.cowbellClip, newVal.floatValue());
+        });
+        cymbalLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            Instruments.setClipVolume(Instruments.cymbalClip, newVal.floatValue());
         });
     }
 
@@ -376,6 +398,36 @@ public class Controller {
             }
             Instruments.createBassDrum(bassTone.convertedValue().doubleValue(),
                     bassDecay.convertedValue().doubleValue() / 10000f);
+        });
+    }
+
+    private void createCymbalParameters() {
+        int defaultTone = 103;
+        double defaultDecay = 0.7;
+        int defaultDecayInt = (int) (defaultDecay * 10000);
+
+        cymbalTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 4));
+        cymbalTone.setConvertedValue(defaultTone);
+        cymbalTone.setOnMouseReleased(e -> {
+            if (sequencer.isPlaying()) {
+                sequencer.togglePlayState();
+                for (RadioButton b : stepRadioButtons)
+                    b.setEffect(null);
+            }
+            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(),
+                    cymbalDecay.convertedValue().doubleValue() / 10000f);
+        });
+
+        cymbalDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
+        cymbalDecay.setConvertedValue(defaultDecayInt);
+        cymbalDecay.setOnMouseReleased(e -> {
+            if (sequencer.isPlaying()) {
+                sequencer.togglePlayState();
+                for (RadioButton b : stepRadioButtons)
+                    b.setEffect(null);
+            }
+            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(),
+                    cymbalDecay.convertedValue().doubleValue() / 10000f);
         });
     }
 
