@@ -5,28 +5,33 @@ import com.asch.eoe.Oscillator;
 
 public class FrequencyModulatedOscillator extends Oscillator {
 
-    private double termA = 1f;
-    private double termB = 1f;
+    private Oscillator modulator;
+
+    private double carrierGain = 1f;
+    private double modulatorGain = 1f;
 
     private final double carrierFreq;
     private final double modulatorFreq;
 
     public FrequencyModulatedOscillator(Oscillator carrier, Oscillator modulator) {
-        this.carrierFreq = Math.PI * carrier.getFrequency() / (double) Configuration.SAMPLE_RATE;
-        this.modulatorFreq = Math.PI * modulator.getFrequency() / (double)Configuration.SAMPLE_RATE;
+        this.modulator = modulator;
+
+        this.carrierFreq = 2 * Math.PI * carrier.getFrequency() / (double) Configuration.SAMPLE_RATE;
+        this.modulatorFreq = 2 * Math.PI * modulator.getFrequency() / (double)Configuration.SAMPLE_RATE;
     }
 
-    public void setTermA(double termA) {
-        this.termA = termA;
+    public void setCarrierGain(double gain) {
+        this.carrierGain = gain;
     }
 
-    public void setTermB(double termB) {
-        this.termB = termB;
+    public void setModulatorGain(double gain) {
+        this.modulatorGain = gain;
     }
 
     @Override
     public double sample(double t) {
-        double in = (termB / modulatorFreq) * (Math.cos(modulatorFreq * t) - 1);
-        return termA * Math.sin(carrierFreq * t - in);
+        // Approximate FM(t) ~= Asin(wc t + b m(t)), where m(t) = modulator
+        double beta = modulatorGain / modulatorFreq;
+        return carrierGain * Math.sin(carrierFreq * t + beta * modulator.sample(t));
     }
 }
