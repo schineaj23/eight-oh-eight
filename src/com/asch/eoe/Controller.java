@@ -258,22 +258,11 @@ public class Controller {
 
     private void registerStepCallbacks() {
         System.out.println("Registering Step Callbacks");
-        step1.selectedProperty().addListener((o, ov, value) -> updateSequence(1, value));
-        step2.selectedProperty().addListener((o, ov, value) -> updateSequence(2, value));
-        step3.selectedProperty().addListener((o, ov, value) -> updateSequence(3, value));
-        step4.selectedProperty().addListener((o, ov, value) -> updateSequence(4, value));
-        step5.selectedProperty().addListener((o, ov, value) -> updateSequence(5, value));
-        step6.selectedProperty().addListener((o, ov, value) -> updateSequence(6, value));
-        step7.selectedProperty().addListener((o, ov, value) -> updateSequence(7, value));
-        step8.selectedProperty().addListener((o, ov, value) -> updateSequence(8, value));
-        step9.selectedProperty().addListener((o, ov, value) -> updateSequence(9, value));
-        step10.selectedProperty().addListener((o, ov, value) -> updateSequence(10, value));
-        step11.selectedProperty().addListener((o, ov, value) -> updateSequence(11, value));
-        step12.selectedProperty().addListener((o, ov, value) -> updateSequence(12, value));
-        step13.selectedProperty().addListener((o, ov, value) -> updateSequence(13, value));
-        step14.selectedProperty().addListener((o, ov, value) -> updateSequence(14, value));
-        step15.selectedProperty().addListener((o, ov, value) -> updateSequence(15, value));
-        step16.selectedProperty().addListener((o, ov, value) -> updateSequence(16, value));
+        for(RadioButton b : stepRadioButtons) {
+            b.selectedProperty().addListener((o, ov, value) -> {
+                updateSequence(Integer.parseInt(b.getId().substring(4)), value);
+            });
+        }
     }
 
     private void registerLevelCallbacks() {
@@ -293,6 +282,14 @@ public class Controller {
         cymbalLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.cymbalClip, newVal.floatValue()));
     }
 
+    private void clearTimeline() {
+        if (sequencer.isPlaying()) {
+            sequencer.togglePlayState();
+            for (RadioButton b : stepRadioButtons)
+                b.setEffect(null);
+        }
+    }
+
     private void createSnareParameters() {
         int defaultTone = 89;
         double defaultSnappy = 0.06;
@@ -301,22 +298,14 @@ public class Controller {
         snareTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 2));
         snareTone.setConvertedValue(defaultTone);
         snareTone.setOnMouseReleased(e -> {
-            if (sequencer.isPlaying()) {
-                sequencer.togglePlayState();
-                for (RadioButton b : stepRadioButtons)
-                    b.setEffect(null);
-            }
+            clearTimeline();
             Instruments.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
         });
 
         snareSnappy.setValueConverter(new DialBoundedIntegerConverter(defaultSnappyInt / 2, defaultSnappyInt * 2));
         snareSnappy.setConvertedValue(defaultSnappyInt);
         snareSnappy.setOnMouseReleased(e -> {
-            if (sequencer.isPlaying()) {
-                sequencer.togglePlayState();
-                for (RadioButton b : stepRadioButtons)
-                    b.setEffect(null);
-            }
+            clearTimeline();
             Instruments.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
         });
     }
@@ -329,22 +318,14 @@ public class Controller {
         bassTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 4));
         bassTone.setConvertedValue(defaultTone);
         bassTone.setOnMouseReleased(e -> {
-            if (sequencer.isPlaying()) {
-                sequencer.togglePlayState();
-                for (RadioButton b : stepRadioButtons)
-                    b.setEffect(null);
-            }
+            clearTimeline();
             Instruments.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
         });
 
         bassDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
         bassDecay.setConvertedValue(defaultDecayInt);
         bassDecay.setOnMouseReleased(e -> {
-            if (sequencer.isPlaying()) {
-                sequencer.togglePlayState();
-                for (RadioButton b : stepRadioButtons)
-                    b.setEffect(null);
-            }
+            clearTimeline();
             Instruments.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
         });
     }
@@ -357,22 +338,14 @@ public class Controller {
         cymbalTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 4));
         cymbalTone.setConvertedValue(defaultTone);
         cymbalTone.setOnMouseReleased(e -> {
-            if (sequencer.isPlaying()) {
-                sequencer.togglePlayState();
-                for (RadioButton b : stepRadioButtons)
-                    b.setEffect(null);
-            }
+            clearTimeline();
             Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(), cymbalDecay.convertedValue().doubleValue() / 10000f);
         });
 
         cymbalDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
         cymbalDecay.setConvertedValue(defaultDecayInt);
         cymbalDecay.setOnMouseReleased(e -> {
-            if (sequencer.isPlaying()) {
-                sequencer.togglePlayState();
-                for (RadioButton b : stepRadioButtons)
-                    b.setEffect(null);
-            }
+            clearTimeline();
             Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(), cymbalDecay.convertedValue().doubleValue() / 10000f);
         });
     }
