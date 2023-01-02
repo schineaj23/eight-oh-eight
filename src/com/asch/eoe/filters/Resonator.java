@@ -2,7 +2,7 @@ package com.asch.eoe.filters;
 
 import com.asch.eoe.Filter;
 
-public class Resonator implements Filter {
+public class Resonator extends Filter {
     private double Q;
     private double previousValue;
 
@@ -11,9 +11,9 @@ public class Resonator implements Filter {
     }
 
     @Override
-    public double sample(double value) {
+    public double sample(double value, double t) {
         double sample = Q * (value + previousValue);
         previousValue = value;
-        return sample;
+        return sample * sampleEnvelope(value, t);
     }
 }

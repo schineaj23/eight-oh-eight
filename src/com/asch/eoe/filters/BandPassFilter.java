@@ -2,7 +2,7 @@ package com.asch.eoe.filters;
 
 import com.asch.eoe.Filter;
 
-public class BandPassFilter implements Filter {
+public class BandPassFilter extends Filter {
     private final LowPassFilter lowPassFilter;
     private final HighPassFilter highPassFilter;
 
@@ -12,8 +12,8 @@ public class BandPassFilter implements Filter {
     }
 
     @Override
-    public double sample(double value) {
-        double lowSample = lowPassFilter.sample(value);
-        return highPassFilter.sample(lowSample);
+    public double sample(double value, double t) {
+        double lowSample = lowPassFilter.sample(value, t);
+        return highPassFilter.sample(lowSample, t) * sampleEnvelope(value, t);
     }
 }

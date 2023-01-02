@@ -3,7 +3,7 @@ package com.asch.eoe.filters;
 import com.asch.eoe.Configuration;
 import com.asch.eoe.Filter;
 
-public class LowPassFilter implements Filter {
+public class LowPassFilter extends Filter {
     private double previousSample = 0;
     private double alpha;
 
@@ -19,10 +19,10 @@ public class LowPassFilter implements Filter {
     }
 
     @Override
-    public double sample(double value) {
+    public double sample(double value, double t) {
         double sample = alpha * value + (1 - alpha) * previousSample;
         // System.out.printf("IN: %f OUT: %f\n", value, sample);
         previousSample = sample;
-        return sample;
+        return sample * sampleEnvelope(value, t);
     }
 }
