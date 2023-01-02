@@ -176,11 +176,7 @@ public class Controller {
                     return;
                 }
             }
-
-            int steps = sequencer.getStepsForClip(selectedClip);
-            for (int i = 0; i < 16; i++) {
-                stepRadioButtons[i].setSelected((steps & Steps.encodedSteps[i]) > 0);
-            }
+            displaySteps();
         });
 
         startButton.onActionProperty().set(e -> {
@@ -204,9 +200,15 @@ public class Controller {
         });
 
         tapButton.onActionProperty().set(e -> {
-            if (selectedClip != null) {
-                Instruments.playClip(selectedClip);
+            if(selectedClip == null)
+                return;
+
+            if(sequencer.isPlaying()) {
+                updateSequence(sequencer.step().intValue(), true);
+                displaySteps();
             }
+            else
+                Instruments.playClip(selectedClip);
         });
 
         clearButton.onActionProperty().set(e -> {
@@ -218,6 +220,13 @@ public class Controller {
         });
     }
 
+    private void displaySteps() {
+        int steps = sequencer.getStepsForClip(selectedClip);
+        for (int i = 0; i < 16; i++) {
+            stepRadioButtons[i].setSelected((steps & Steps.encodedSteps[i]) > 0);
+        }
+    }
+
     private void updateSequence(int id, boolean value) {
         if (selectedClip == null) {
             System.out.println("cannot updateSequence on null selectedClip!");
@@ -225,9 +234,9 @@ public class Controller {
         }
 
         if (value) {
-            sequencer.addClipAtStep(selectedClip, id - 1);
+            sequencer.addClipAtStep(selectedClip, id);
         } else {
-            sequencer.removeClipAtStep(selectedClip, id - 1);
+            sequencer.removeClipAtStep(selectedClip, id);
         }
     }
 
@@ -260,7 +269,7 @@ public class Controller {
         System.out.println("Registering Step Callbacks");
         for(RadioButton b : stepRadioButtons) {
             b.selectedProperty().addListener((o, ov, value) -> {
-                updateSequence(Integer.parseInt(b.getId().substring(4)), value);
+                updateSequence(Integer.parseInt(b.getId().substring(4)) - 1, value);
             });
         }
     }
