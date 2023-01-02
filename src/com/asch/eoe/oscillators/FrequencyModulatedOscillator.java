@@ -29,6 +29,11 @@ public class FrequencyModulatedOscillator extends Oscillator {
     }
 
     @Override
+    public double getFrequency() {
+        return modulatorFreq;
+    }
+
+    @Override
     public double sample(double t) {
         // Approximate FM(t) ~= Asin(wc t + b m(t)), where m(t) = modulator
         double beta = modulatorGain / modulatorFreq;
