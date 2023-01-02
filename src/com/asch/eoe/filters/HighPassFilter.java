@@ -22,7 +22,7 @@ public class HighPassFilter implements Filter {
     public double sample(double input) {
         double sample = alpha * previousSample + alpha * (input - previousInput);
         previousSample = sample;
-        previousSample = input;
+        previousInput = input;
         return sample;
     }
 }
