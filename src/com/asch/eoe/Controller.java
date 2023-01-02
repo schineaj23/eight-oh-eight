@@ -55,6 +55,15 @@ public class Controller {
     private DialControl cymbalLevel;
 
     @FXML
+    private DialControl openHatLevel;
+
+    @FXML
+    private DialControl openHatDecay;
+
+    @FXML
+    private DialControl closedHatLevel;
+
+    @FXML
     private Button startButton;
 
     @FXML
@@ -134,6 +143,7 @@ public class Controller {
         createSnareParameters();
         createBassParameters();
         createCymbalParameters();
+        createOpenHatParameters();
 
         instrumentSelect.setTickCount(11);
         instrumentSelect.setValueConverter(new DialBoundedIntegerConverter(0, 11));
@@ -164,6 +174,14 @@ public class Controller {
                 case 9 -> {
                     selectedClip = Instruments.cymbalClip;
                     System.out.println("Selected Cymbal");
+                }
+                case 10 -> {
+                    selectedClip = Instruments.openHatClip;
+                    System.out.println("Selected Open Hat");
+                }
+                case 11 -> {
+                    selectedClip = Instruments.closedHatClip;
+                    System.out.println("Selected Closed Hat");
                 }
                 default -> {
                     selectedClip = null;
@@ -282,6 +300,8 @@ public class Controller {
         maracaClapLevel.setRawValue(0.5);
         cowbellLevel.setRawValue(0.5);
         cymbalLevel.setRawValue(0.5);
+        openHatLevel.setRawValue(0.5);
+        closedHatLevel.setRawValue(0.5);
 
         bassLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.bassClip, newVal.floatValue()));
         snareLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.snareClip, newVal.floatValue()));
@@ -289,6 +309,8 @@ public class Controller {
         maracaClapLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.handclapClip, newVal.floatValue()));
         cowbellLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.cowbellClip, newVal.floatValue()));
         cymbalLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.cymbalClip, newVal.floatValue()));
+        openHatLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.openHatClip, newVal.floatValue()));
+        closedHatLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.closedHatClip, newVal.floatValue()));
     }
 
     private void clearTimeline() {
@@ -344,7 +366,7 @@ public class Controller {
         double defaultDecay = 0.7;
         int defaultDecayInt = (int) (defaultDecay * 10000);
 
-        cymbalTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 4));
+        cymbalTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 7));
         cymbalTone.setConvertedValue(defaultTone);
         cymbalTone.setOnMouseReleased(e -> {
             clearTimeline();
@@ -356,6 +378,18 @@ public class Controller {
         cymbalDecay.setOnMouseReleased(e -> {
             clearTimeline();
             Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(), cymbalDecay.convertedValue().doubleValue() / 10000f);
+        });
+    }
+
+    private void createOpenHatParameters() {
+        double defaultDecay = 0.2;
+        int defaultDecayInt = (int) (defaultDecay * 10000);
+
+        openHatDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 10, defaultDecayInt * 2));
+        openHatDecay.setConvertedValue(defaultDecayInt);
+        openHatDecay.setOnMouseReleased(e -> {
+            clearTimeline();
+            Instruments.createOpenHat(openHatDecay.convertedValue().doubleValue() / 10000f);
         });
     }
 

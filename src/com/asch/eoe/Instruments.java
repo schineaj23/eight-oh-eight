@@ -26,8 +26,9 @@ public class Instruments {
     public static Clip handclapClip;
     public static Clip snareClip;
     public static Clip bassClip;
-
     public static Clip cymbalClip;
+    public static Clip openHatClip;
+    public static Clip closedHatClip;
 
     private static void assignClip(Sound sound, Clip clip) {
         // When updating make sure that we are not modifying a clip that is currently open
@@ -55,6 +56,8 @@ public class Instruments {
         createHandClap();
         createSnare(89, 0.06);
         createCymbal(102.8, 0.7);
+        createOpenHat(0.2);
+        createClosedHat();
     }
 
     public static void assignClipInformation(Mixer mixer, DataLine.Info clipInfo) {
@@ -65,6 +68,8 @@ public class Instruments {
             snareClip = (Clip) mixer.getLine(clipInfo);
             bassClip = (Clip) mixer.getLine(clipInfo);
             cymbalClip = (Clip) mixer.getLine(clipInfo);
+            openHatClip = (Clip) mixer.getLine(clipInfo);
+            closedHatClip = (Clip) mixer.getLine(clipInfo);
         } catch (LineUnavailableException e) {
             System.out.println("assignClipInformation() failed!");
         }
@@ -77,6 +82,8 @@ public class Instruments {
         handclapClip.drain();
         snareClip.drain();
         cymbalClip.drain();
+        openHatClip.drain();
+        closedHatClip.drain();
 
         cowbellClip.close();
         claveClip.close();
@@ -84,6 +91,8 @@ public class Instruments {
         handclapClip.close();
         snareClip.close();
         cymbalClip.close();
+        openHatClip.close();
+        closedHatClip.close();
 
         System.out.println("Instruments.shutdown() successful");
     }
@@ -217,5 +226,67 @@ public class Instruments {
         cymbal.generate(1);
 
         assignClip(cymbal, cymbalClip);
+    }
+
+    public static void createOpenHat(double decay) {
+        Sound hat = new Sound();
+
+        // ABCD algorithm. A <- B modulates <- C modulates <- D modulates
+        Square waveD = new Square(459);
+        Square waveC = new Square(160);
+        Square waveB = new Square(444);
+        Square waveA = new Square(261);
+
+        waveD.setGain(0.7);
+        waveC.setGain(0.9);
+        waveB.setGain(0.5);
+        waveA.setGain(0.5);
+
+        FrequencyModulatedOscillator bankCD = new FrequencyModulatedOscillator(waveC, waveD);
+        FrequencyModulatedOscillator bankBC = new FrequencyModulatedOscillator(waveB, bankCD);
+        FrequencyModulatedOscillator bankAB = new FrequencyModulatedOscillator(waveA, bankBC);
+
+        hat.addOscillator(bankAB);
+
+        // hat.addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2));
+
+        hat.addFilter(new HighPassFilter(24000));
+        ExponentialEnvelope envelope = new ExponentialEnvelope(1, 0.0001, decay);
+        hat.setEnvelope(envelope);
+        //hat.setAmplifier(new VoltageControlledAmplifier(envelope, 1.2));
+        hat.generate(1);
+
+        assignClip(hat, openHatClip);
+    }
+
+    public static void createClosedHat() {
+        Sound hat = new Sound();
+
+        // ABCD algorithm. A <- B modulates <- C modulates <- D modulates
+        Square waveD = new Square(459);
+        Square waveC = new Square(160);
+        Square waveB = new Square(444);
+        Square waveA = new Square(261);
+
+        waveD.setGain(0.7);
+        waveC.setGain(0.9);
+        waveB.setGain(0.5);
+        waveA.setGain(0.5);
+
+        FrequencyModulatedOscillator bankCD = new FrequencyModulatedOscillator(waveC, waveD);
+        FrequencyModulatedOscillator bankBC = new FrequencyModulatedOscillator(waveB, bankCD);
+        FrequencyModulatedOscillator bankAB = new FrequencyModulatedOscillator(waveA, bankBC);
+
+        hat.addOscillator(bankAB);
+
+        // hat.addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2));
+
+        hat.addFilter(new HighPassFilter(24000));
+        ExponentialEnvelope envelope = new ExponentialEnvelope(1, 0.0001, 0.07);
+        hat.setEnvelope(envelope);
+        //hat.setAmplifier(new VoltageControlledAmplifier(envelope, 1.2));
+        hat.generate(0.8);
+
+        assignClip(hat, closedHatClip);
     }
 }

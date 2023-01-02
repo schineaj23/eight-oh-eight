@@ -10,5 +10,5 @@
 - ~~handclap~~
 - ~~cowbell~~
 - cymbal
-- open hat
-- closed hat
+- ~~open hat~~
+- ~~closed hat~~
