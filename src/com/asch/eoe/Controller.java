@@ -229,9 +229,6 @@ public class Controller {
                 b.setEffect(null);
             }
         });
-
-        // FIXME: remove this once done testing
-        instrumentSelect.setConvertedValue(9);
     }
 
     private void updateSequence(int id, boolean value) {

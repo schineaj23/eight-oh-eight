@@ -160,7 +160,7 @@
                         <DialControl fx:id="lowTuning" layoutX="17.0" layoutY="83.0" prefHeight="40.0" prefWidth="40.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="65.0" prefHeight="17.0" prefWidth="76.0" text="TUNING" textAlignment="CENTER" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="17.0" prefWidth="76.0" text="LO CONGA" textAlignment="CENTER" />
-                        <Slider fx:id="lowSlider" layoutX="31.0" layoutY="153.0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" />
+                        <Slider fx:id="lowSlider" blockIncrement="1.0" layoutX="31.0" layoutY="153.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" snapToTicks="true" />
                      </children>
                   </Pane>
                   <Pane prefHeight="209.0" prefWidth="75.0">
@@ -171,7 +171,7 @@
                         <DialControl fx:id="midTuning" layoutX="17.0" layoutY="83.0" prefHeight="40.0" prefWidth="40.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="65.0" prefHeight="17.0" prefWidth="76.0" text="TUNING" textAlignment="CENTER" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="17.0" prefWidth="76.0" text="MID CONGA" textAlignment="CENTER" />
-                        <Slider fx:id="midSlider" layoutX="31.0" layoutY="153.0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" />
+                        <Slider fx:id="midSlider" blockIncrement="1.0" layoutX="31.0" layoutY="153.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" snapToTicks="true" />
                      </children>
                   </Pane>
                   <Pane prefHeight="209.0" prefWidth="75.0">
@@ -182,7 +182,7 @@
                         <DialControl fx:id="hiTuning" layoutX="17.0" layoutY="83.0" prefHeight="40.0" prefWidth="40.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="65.0" prefHeight="17.0" prefWidth="76.0" text="TUNING" textAlignment="CENTER" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="17.0" prefWidth="76.0" text="HI CONGA" textAlignment="CENTER" />
-                        <Slider fx:id="hiSlider" layoutX="31.0" layoutY="153.0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" />
+                        <Slider fx:id="hiSlider" blockIncrement="1.0" layoutX="31.0" layoutY="153.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" snapToTicks="true" />
                      </children>
                   </Pane>
                   <Pane prefHeight="209.0" prefWidth="75.0">
@@ -191,7 +191,7 @@
                         <DialControl fx:id="claveRimLevel" layoutX="17.0" layoutY="24.0" prefHeight="40.0" prefWidth="40.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="6.0" prefHeight="17.0" prefWidth="76.0" text="LEVEL" textAlignment="CENTER" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="17.0" prefWidth="76.0" text="CLAVES" textAlignment="CENTER" />
-                        <Slider fx:id="claveRimSlider" layoutX="31.0" layoutY="153.0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" />
+                        <Slider fx:id="claveRimSlider" blockIncrement="1.0" layoutX="31.0" layoutY="153.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" snapToTicks="true" />
                      </children>
                   </Pane>
                   <Pane prefHeight="209.0" prefWidth="75.0">
@@ -200,7 +200,7 @@
                         <DialControl fx:id="maracaClapLevel" layoutX="17.0" layoutY="24.0" prefHeight="40.0" prefWidth="40.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="6.0" prefHeight="17.0" prefWidth="76.0" text="LEVEL" textAlignment="CENTER" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="17.0" prefWidth="76.0" text="MARACAS" textAlignment="CENTER" />
-                        <Slider fx:id="maracaClapSlider" layoutX="31.0" layoutY="153.0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" />
+                        <Slider fx:id="maracaClapSlider" blockIncrement="1.0" layoutX="31.0" layoutY="153.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" orientation="VERTICAL" prefHeight="34.0" prefWidth="14.0" snapToTicks="true" />
                      </children>
                   </Pane>
                   <Pane prefHeight="209.0" prefWidth="75.0">
