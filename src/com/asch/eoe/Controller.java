@@ -7,6 +7,7 @@ import com.io7m.digal.core.DialControlLabelled;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.effect.InnerShadow;
 
 import javax.sound.sampled.Clip;
@@ -62,6 +63,24 @@ public class Controller {
 
     @FXML
     private DialControl closedHatLevel;
+
+    @FXML
+    private DialControl lowLevel;
+
+    @FXML
+    private DialControl midLevel;
+
+    @FXML
+    private DialControl hiLevel;
+
+    @FXML
+    private DialControl lowTuning;
+
+    @FXML
+    private DialControl midTuning;
+
+    @FXML
+    private DialControl hiTuning;
 
     @FXML
     private Button startButton;
@@ -126,6 +145,15 @@ public class Controller {
     @FXML
     private Button clearButton;
 
+    @FXML
+    private Slider lowSlider;
+
+    @FXML
+    private Slider midSlider;
+
+    @FXML
+    private Slider hiSlider;
+
     private Clip selectedClip;
 
     private RadioButton[] stepRadioButtons;
@@ -144,6 +172,9 @@ public class Controller {
         createBassParameters();
         createCymbalParameters();
         createOpenHatParameters();
+        createLowParameters();
+        createMidParameters();
+        createHighParameters();
 
         instrumentSelect.setTickCount(11);
         instrumentSelect.setValueConverter(new DialBoundedIntegerConverter(0, 11));
@@ -158,6 +189,18 @@ public class Controller {
                 case 2 -> {
                     selectedClip = Instruments.snareClip;
                     System.out.println("Selected Snare");
+                }
+                case 3 -> {
+                    selectedClip = (isHighPosition(lowSlider)) ? Instruments.loCongaClip : Instruments.loTomClip;
+                    System.out.printf("Selected %s\n", (isHighPosition(lowSlider)) ? "LoConga" : "LoTom");
+                }
+                case 4 -> {
+                    selectedClip = (isHighPosition(midSlider)) ? Instruments.midCongaClip : Instruments.midTomClip;
+                    System.out.printf("Selected %s\n", (isHighPosition(midSlider)) ? "MidConga" : "MidTom");
+                }
+                case 5 -> {
+                    selectedClip = (isHighPosition(hiSlider)) ? Instruments.hiCongaClip : Instruments.hiTomClip;
+                    System.out.printf("Selected %s\n", (isHighPosition(hiSlider)) ? "HiConga" : "HiTom");
                 }
                 case 6 -> {
                     selectedClip = Instruments.claveClip;
@@ -258,6 +301,10 @@ public class Controller {
         }
     }
 
+    private boolean isHighPosition(Slider slider) {
+        return slider.valueProperty().doubleValue() > 0.5;
+    }
+
     private void initializeSequencer() {
         // Start the sequencer thread once the UI is up and running.
         sequencer.start();
@@ -302,6 +349,9 @@ public class Controller {
         cymbalLevel.setRawValue(0.5);
         openHatLevel.setRawValue(0.5);
         closedHatLevel.setRawValue(0.5);
+        lowLevel.setRawValue(0.5);
+        midLevel.setRawValue(0.5);
+        hiLevel.setRawValue(0.5);
 
         bassLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.bassClip, newVal.floatValue()));
         snareLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.snareClip, newVal.floatValue()));
@@ -311,6 +361,18 @@ public class Controller {
         cymbalLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.cymbalClip, newVal.floatValue()));
         openHatLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.openHatClip, newVal.floatValue()));
         closedHatLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.closedHatClip, newVal.floatValue()));
+        lowLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            Instruments.setClipVolume(Instruments.loCongaClip, newVal.floatValue());
+            Instruments.setClipVolume(Instruments.loTomClip, newVal.floatValue());
+        });
+        midLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            Instruments.setClipVolume(Instruments.midCongaClip, newVal.floatValue());
+            Instruments.setClipVolume(Instruments.midTomClip, newVal.floatValue());
+        });
+        hiLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
+            Instruments.setClipVolume(Instruments.hiCongaClip, newVal.floatValue());
+            Instruments.setClipVolume(Instruments.hiTomClip, newVal.floatValue());
+        });
     }
 
     private void clearTimeline() {
@@ -392,6 +454,36 @@ public class Controller {
         openHatDecay.setOnMouseReleased(e -> {
             clearTimeline();
             Instruments.createOpenHat(openHatDecay.convertedValue().doubleValue() / 10000f);
+        });
+    }
+
+    private void createLowParameters() {
+        lowTuning.setValueConverter(new DialBoundedIntegerConverter(50, 150));
+        lowTuning.setConvertedValue(100);
+        lowTuning.setOnMouseReleased(e -> {
+            clearTimeline();
+            Instruments.createLoConga(lowTuning.convertedValue().doubleValue() / 100f);
+            Instruments.createLoTom(lowTuning.convertedValue().doubleValue() / 100f);
+        });
+    }
+
+    private void createMidParameters() {
+        midTuning.setValueConverter(new DialBoundedIntegerConverter(50, 150));
+        midTuning.setConvertedValue(100);
+        midTuning.setOnMouseReleased(e -> {
+            clearTimeline();
+            Instruments.createMidConga(midTuning.convertedValue().doubleValue() / 100f);
+            Instruments.createMidTom(midTuning.convertedValue().doubleValue() / 100f);
+        });
+    }
+
+    private void createHighParameters() {
+        hiTuning.setValueConverter(new DialBoundedIntegerConverter(50, 150));
+        hiTuning.setConvertedValue(100);
+        hiTuning.setOnMouseReleased(e -> {
+            clearTimeline();
+            Instruments.createHiConga(hiTuning.convertedValue().doubleValue() / 100f);
+            Instruments.createHiTom(hiTuning.convertedValue().doubleValue() / 100f);
         });
     }
 

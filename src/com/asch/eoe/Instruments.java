@@ -29,6 +29,12 @@ public class Instruments {
     public static Clip cymbalClip;
     public static Clip openHatClip;
     public static Clip closedHatClip;
+    public static Clip loCongaClip;
+    public static Clip midCongaClip;
+    public static Clip hiCongaClip;
+    public static Clip loTomClip;
+    public static Clip midTomClip;
+    public static Clip hiTomClip;
 
     private static void assignClip(Sound sound, Clip clip) {
         // When updating make sure that we are not modifying a clip that is currently open
@@ -58,6 +64,12 @@ public class Instruments {
         createCymbal(1, 0.7);
         createOpenHat(0.2);
         createClosedHat();
+        createLoConga(1);
+        createLoTom(1);
+        createMidConga(1);
+        createMidTom(1);
+        createHiConga(1);
+        createHiTom(1);
     }
 
     public static void assignClipInformation(Mixer mixer, DataLine.Info clipInfo) {
@@ -70,6 +82,12 @@ public class Instruments {
             cymbalClip = (Clip) mixer.getLine(clipInfo);
             openHatClip = (Clip) mixer.getLine(clipInfo);
             closedHatClip = (Clip) mixer.getLine(clipInfo);
+            loCongaClip = (Clip) mixer.getLine(clipInfo);
+            midCongaClip = (Clip) mixer.getLine(clipInfo);
+            hiCongaClip = (Clip) mixer.getLine(clipInfo);
+            loTomClip = (Clip) mixer.getLine(clipInfo);
+            midTomClip = (Clip) mixer.getLine(clipInfo);
+            hiTomClip = (Clip) mixer.getLine(clipInfo);
         } catch (LineUnavailableException e) {
             System.out.println("assignClipInformation() failed!");
         }
@@ -84,6 +102,12 @@ public class Instruments {
         cymbalClip.drain();
         openHatClip.drain();
         closedHatClip.drain();
+        loCongaClip.drain();
+        midCongaClip.drain();
+        hiCongaClip.drain();
+        loTomClip.drain();
+        midTomClip.drain();
+        hiTomClip.drain();
 
         cowbellClip.close();
         claveClip.close();
@@ -93,6 +117,12 @@ public class Instruments {
         cymbalClip.close();
         openHatClip.close();
         closedHatClip.close();
+        loCongaClip.close();
+        midCongaClip.close();
+        hiCongaClip.close();
+        loTomClip.close();
+        midTomClip.close();
+        hiTomClip.close();
 
         System.out.println("Instruments.shutdown() successful");
     }
@@ -260,5 +290,91 @@ public class Instruments {
         hat.generate(0.8);
 
         assignClip(hat, closedHatClip);
+    }
+
+    public static void createLoConga(double tuningMultiplier) {
+        Sound conga = new Sound();
+        Sine sine = new Sine(89 * tuningMultiplier); // 89
+        sine.setGain(2);
+        conga.addOscillator(sine);
+
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(1, 0.0001, 0.18);// 0.18
+        conga.setAmplifier(new VoltageControlledAmplifier(snareEnvelope, 1.1));
+
+        conga.generate(0.5);
+
+        assignClip(conga, loCongaClip);
+    }
+
+    public static void createLoTom(double tuningMultiplier) {
+        Sound tom = new Sound();
+        Sine sine = new Sine(40 * tuningMultiplier); // 89
+        sine.setGain(2);
+        tom.addOscillator(sine);
+
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(1, 0.0001, 0.18);// 0.18
+        tom.setAmplifier(new VoltageControlledAmplifier(snareEnvelope, 1.1));
+
+        tom.generate(0.5);
+
+        assignClip(tom, loTomClip);
+    }
+
+    public static void createMidConga(double tuningMultiplier) {
+        Sound conga = new Sound();
+        Sine sine = new Sine(120 * tuningMultiplier);
+        sine.setGain(2);
+        conga.addOscillator(sine);
+
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(1, 0.0001, 0.07); // 0.07
+        conga.setAmplifier(new VoltageControlledAmplifier(snareEnvelope, 1.1));
+
+        conga.generate(0.5);
+
+        assignClip(conga, midCongaClip);
+    }
+
+    public static void createMidTom(double tuningMultiplier) {
+        Sound tom = new Sound();
+        Sine sine = new Sine(60 * tuningMultiplier);
+        sine.setGain(2);
+        tom.addOscillator(sine);
+
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(1, 0.0001, 0.18);// 0.18
+        tom.setAmplifier(new VoltageControlledAmplifier(snareEnvelope, 1.1));
+
+        tom.addFilter(new LowPassFilter(60));
+
+        tom.generate(0.5);
+
+        assignClip(tom, midTomClip);
+    }
+
+    public static void createHiConga(double tuningMultiplier) {
+        Sound conga = new Sound();
+        Sine sine = new Sine(189); // 189
+        sine.setGain(2);
+        conga.addOscillator(sine);
+
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(1, 0.0001, 0.07); // 0.07
+        conga.setAmplifier(new VoltageControlledAmplifier(snareEnvelope, 1.1));
+
+        conga.generate(0.5);
+
+        assignClip(conga, hiCongaClip);
+    }
+
+    public static void createHiTom(double tuningMultiplier) {
+        Sound tom = new Sound();
+        Sine sine = new Sine(80 * tuningMultiplier);
+        sine.setGain(2);
+        tom.addOscillator(sine);
+
+        ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(1, 0.0001, 0.09);// 0.18
+        tom.setAmplifier(new VoltageControlledAmplifier(snareEnvelope, 1.1));
+
+        tom.generate(0.5);
+
+        assignClip(tom, hiTomClip);
     }
 }
