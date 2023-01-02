@@ -1,18 +1,15 @@
 package com.asch.eoe;
 
-import javax.sound.sampled.Clip;
-
 import com.asch.eoe.Sequencer.Steps;
 import com.io7m.digal.core.DialBoundedIntegerConverter;
 import com.io7m.digal.core.DialControl;
 import com.io7m.digal.core.DialControlLabelled;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.effect.InnerShadow;
+
+import javax.sound.sampled.Clip;
 
 // Controls the UI logic.
 // I hate how long this class is.
@@ -127,8 +124,7 @@ public class Controller {
     private final Sequencer sequencer = new Sequencer();
 
     public void initialize() {
-        stepRadioButtons = new RadioButton[] { step1, step2, step3, step4, step5, step6, step7, step8, step9, step10,
-                step11, step12, step13, step14, step15, step16 };
+        stepRadioButtons = new RadioButton[]{step1, step2, step3, step4, step5, step6, step7, step8, step9, step10, step11, step12, step13, step14, step15, step16};
 
         initializeSequencer();
         registerStepCallbacks();
@@ -141,41 +137,35 @@ public class Controller {
 
         instrumentSelect.setTickCount(11);
         instrumentSelect.setValueConverter(new DialBoundedIntegerConverter(0, 11));
-        instrumentSelect.convertedValue().addListener((ChangeListener<Number>) (observableValue, number, t1) -> {
+        instrumentSelect.convertedValue().addListener((observableValue, number, t1) -> {
             int val = instrumentSelect.convertedValue().intValue();
             System.out.println("Current Instrument: " + val);
             switch (val) {
-                case 1: {
+                case 1 -> {
                     selectedClip = Instruments.bassClip;
                     System.out.println("Selected Bass Drum");
-                    break;
                 }
-                case 2: {
+                case 2 -> {
                     selectedClip = Instruments.snareClip;
                     System.out.println("Selected Snare");
-                    break;
                 }
-                case 6: {
+                case 6 -> {
                     selectedClip = Instruments.claveClip;
                     System.out.println("Selected Clave/Rimshot");
-                    break;
                 }
-                case 7: {
+                case 7 -> {
                     selectedClip = Instruments.handclapClip;
                     System.out.println("Selected Maracas/Handclap");
-                    break;
                 }
-                case 8: {
+                case 8 -> {
                     selectedClip = Instruments.cowbellClip;
                     System.out.println("Selected Cowbell");
-                    break;
                 }
-                case 9: {
+                case 9 -> {
                     selectedClip = Instruments.cymbalClip;
                     System.out.println("Selected Cymbal");
-                    break;
                 }
-                default: {
+                default -> {
                     selectedClip = null;
                     System.out.println("Selected not yet implemented");
 
@@ -207,13 +197,10 @@ public class Controller {
         tempo.dial().setValueConverter(new DialBoundedIntegerConverter(30, 180));
         tempo.dial().setConvertedValue(90);
         sequencer.setTempo(90);
-        tempo.dial().convertedValue().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-                int newTempo = tempo.dial().convertedValue().intValue();
-                sequencer.setTempo(newTempo);
-                System.out.printf("Changed tempo to %d\n", newTempo);
-            }
+        tempo.dial().convertedValue().addListener((arg0, arg1, arg2) -> {
+            int newTempo = tempo.dial().convertedValue().intValue();
+            sequencer.setTempo(newTempo);
+            System.out.printf("Changed tempo to %d\n", newTempo);
         });
 
         tapButton.onActionProperty().set(e -> {
@@ -248,65 +235,45 @@ public class Controller {
         // Start the sequencer thread once the UI is up and running.
         sequencer.start();
 
-        sequencer.step().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
-                // Since the sequencer runs on a separate thread
-                // It is possible for the value to change after we already paused
-                // So clear effects from all buttons to be safe
-                if (!sequencer.isPlaying()) {
-                    for (RadioButton b : stepRadioButtons) {
-                        b.setEffect(null);
-                    }
-                    return;
+        sequencer.step().addListener((observableValue, number, newNumber) -> {
+            // Since the sequencer runs on a separate thread
+            // It is possible for the value to change after we already paused
+            // So clear effects from all buttons to be safe
+            if (!sequencer.isPlaying()) {
+                for (RadioButton b : stepRadioButtons) {
+                    b.setEffect(null);
                 }
-
-                int val = newNumber.intValue();
-
-                if (val > 15)
-                    return;
-
-                stepRadioButtons[val].setEffect(new InnerShadow());
-                // Set the previously highlighted step marker to default
-                stepRadioButtons[(val == 0) ? 15 : val - 1].setEffect(null);
+                return;
             }
+
+            int val = newNumber.intValue();
+
+            if (val > 15) return;
+
+            stepRadioButtons[val].setEffect(new InnerShadow());
+            // Set the previously highlighted step marker to default
+            stepRadioButtons[(val == 0) ? 15 : val - 1].setEffect(null);
         });
     }
 
     private void registerStepCallbacks() {
         System.out.println("Registering Step Callbacks");
-        step1.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(1, value));
-        step2.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(2, value));
-        step3.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(3, value));
-        step4.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(4, value));
-        step5.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(5, value));
-        step6.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(6, value));
-        step7.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(7, value));
-        step8.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(8, value));
-        step9.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(9, value));
-        step10.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(10, value));
-        step11.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(11, value));
-        step12.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(12, value));
-        step13.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(13, value));
-        step14.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(14, value));
-        step15.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(15, value));
-        step16.selectedProperty()
-                .addListener((ChangeListener<Boolean>) (o, ov, value) -> updateSequence(16, value));
+        step1.selectedProperty().addListener((o, ov, value) -> updateSequence(1, value));
+        step2.selectedProperty().addListener((o, ov, value) -> updateSequence(2, value));
+        step3.selectedProperty().addListener((o, ov, value) -> updateSequence(3, value));
+        step4.selectedProperty().addListener((o, ov, value) -> updateSequence(4, value));
+        step5.selectedProperty().addListener((o, ov, value) -> updateSequence(5, value));
+        step6.selectedProperty().addListener((o, ov, value) -> updateSequence(6, value));
+        step7.selectedProperty().addListener((o, ov, value) -> updateSequence(7, value));
+        step8.selectedProperty().addListener((o, ov, value) -> updateSequence(8, value));
+        step9.selectedProperty().addListener((o, ov, value) -> updateSequence(9, value));
+        step10.selectedProperty().addListener((o, ov, value) -> updateSequence(10, value));
+        step11.selectedProperty().addListener((o, ov, value) -> updateSequence(11, value));
+        step12.selectedProperty().addListener((o, ov, value) -> updateSequence(12, value));
+        step13.selectedProperty().addListener((o, ov, value) -> updateSequence(13, value));
+        step14.selectedProperty().addListener((o, ov, value) -> updateSequence(14, value));
+        step15.selectedProperty().addListener((o, ov, value) -> updateSequence(15, value));
+        step16.selectedProperty().addListener((o, ov, value) -> updateSequence(16, value));
     }
 
     private void registerLevelCallbacks() {
@@ -318,24 +285,12 @@ public class Controller {
         cowbellLevel.setRawValue(0.5);
         cymbalLevel.setRawValue(0.5);
 
-        bassLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
-            Instruments.setClipVolume(Instruments.bassClip, newVal.floatValue());
-        });
-        snareLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
-            Instruments.setClipVolume(Instruments.snareClip, newVal.floatValue());
-        });
-        claveRimLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
-            Instruments.setClipVolume(Instruments.claveClip, newVal.floatValue());
-        });
-        maracaClapLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
-            Instruments.setClipVolume(Instruments.handclapClip, newVal.floatValue());
-        });
-        cowbellLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
-            Instruments.setClipVolume(Instruments.cowbellClip, newVal.floatValue());
-        });
-        cymbalLevel.rawValue().addListener((obsValue, oldVal, newVal) -> {
-            Instruments.setClipVolume(Instruments.cymbalClip, newVal.floatValue());
-        });
+        bassLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.bassClip, newVal.floatValue()));
+        snareLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.snareClip, newVal.floatValue()));
+        claveRimLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.claveClip, newVal.floatValue()));
+        maracaClapLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.handclapClip, newVal.floatValue()));
+        cowbellLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.cowbellClip, newVal.floatValue()));
+        cymbalLevel.rawValue().addListener((obsValue, oldVal, newVal) -> Instruments.setClipVolume(Instruments.cymbalClip, newVal.floatValue()));
     }
 
     private void createSnareParameters() {
@@ -351,8 +306,7 @@ public class Controller {
                 for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            Instruments.createSnare(snareTone.convertedValue().doubleValue(),
-                    (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
+            Instruments.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
         });
 
         snareSnappy.setValueConverter(new DialBoundedIntegerConverter(defaultSnappyInt / 2, defaultSnappyInt * 2));
@@ -363,8 +317,7 @@ public class Controller {
                 for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            Instruments.createSnare(snareTone.convertedValue().doubleValue(),
-                    (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
+            Instruments.createSnare(snareTone.convertedValue().doubleValue(), (defaultSnappy * 2) - snareSnappy.convertedValue().doubleValue() / 10000f);
         });
     }
 
@@ -381,8 +334,7 @@ public class Controller {
                 for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            Instruments.createBassDrum(bassTone.convertedValue().doubleValue(),
-                    bassDecay.convertedValue().doubleValue() / 10000f);
+            Instruments.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
         });
 
         bassDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
@@ -393,8 +345,7 @@ public class Controller {
                 for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            Instruments.createBassDrum(bassTone.convertedValue().doubleValue(),
-                    bassDecay.convertedValue().doubleValue() / 10000f);
+            Instruments.createBassDrum(bassTone.convertedValue().doubleValue(), bassDecay.convertedValue().doubleValue() / 10000f);
         });
     }
 
@@ -411,8 +362,7 @@ public class Controller {
                 for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(),
-                    cymbalDecay.convertedValue().doubleValue() / 10000f);
+            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(), cymbalDecay.convertedValue().doubleValue() / 10000f);
         });
 
         cymbalDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
@@ -423,8 +373,7 @@ public class Controller {
                 for (RadioButton b : stepRadioButtons)
                     b.setEffect(null);
             }
-            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(),
-                    cymbalDecay.convertedValue().doubleValue() / 10000f);
+            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(), cymbalDecay.convertedValue().doubleValue() / 10000f);
         });
     }
 
