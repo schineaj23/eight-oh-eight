@@ -150,11 +150,11 @@ public class Instruments {
         System.out.printf("Generating Snare with Tone: %.0f and Snappy %.3f\n", tone, snappy);
 
         Sound snare = new Sound();
-        snare.addOscillator(new Sine(tone)).addOscillator(new Noise(0.12)); // 89
+        Sine sine = new Sine(tone);
+        sine.setGain(2);
+        snare.addOscillator(sine).addOscillator(new Noise(0.08)); // 89
 
         // https://talkinmusic.com/snare-eq-phat-punchy-snare-eq/ tips for EQ'ing snares
-        snare.addFilter(new LowPassFilter(1500));
-        snare.addFilter(new HighPassFilter(60));
 
         ExponentialEnvelope snareEnvelope = new ExponentialEnvelope(2, 0.0001, snappy);// 0.06
         snare.setAmplifier(new VoltageControlledAmplifier(snareEnvelope));
