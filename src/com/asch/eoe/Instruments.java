@@ -55,7 +55,7 @@ public class Instruments {
         createClave();
         createHandClap();
         createSnare(89, 0.06);
-        createCymbal(102.8, 0.7);
+        createCymbal(1, 0.7);
         createOpenHat(0.2);
         createClosedHat();
     }
@@ -135,12 +135,12 @@ public class Instruments {
         Sound clave = new Sound();
         clave.addOscillator(new Sine(1200));
         ExponentialEnvelope bellEnvelope = new ExponentialEnvelope(1, 0.001, 0.05);
-        LowPassFilter lowPass = new LowPassFilter(1200);
-        HighPassFilter highPass = new HighPassFilter(1200);
+        LowPassFilter lowPass = new LowPassFilter(1000);
+        HighPassFilter highPass = new HighPassFilter(1500);
         clave.setEnvelope(bellEnvelope);
         clave.addFilter(lowPass);
         clave.addFilter(highPass);
-        clave.setAmplifier(new VoltageControlledAmplifier(bellEnvelope, 1.2));
+        clave.setAmplifier(new VoltageControlledAmplifier(bellEnvelope, 2));
         clave.generate(0.5);
 
         assignClip(clave, claveClip);
@@ -185,45 +185,23 @@ public class Instruments {
         assignClip(handclap, handclapClip);
     }
 
-    // I tried. I really tried.
-    public static void createCymbal(double masterFreq, double decay) {
+    public static void createCymbal(double toneMultiplier, double decay) {
         Sound cymbal = new Sound();
 
-        Square masterOsc = new Square(masterFreq);
-        masterOsc.setGain(0.1);
-        Square slaveOsc1 = new Square(masterFreq * 1.1414);
-        slaveOsc1.setGain(0.1);
-        Square slaveOsc2 = new Square(masterFreq * 1.1962);
-        slaveOsc2.setGain(0.1);
-        Square slaveOsc3 = new Square(masterFreq * 2.1430);
-        slaveOsc3.setGain(0.1);
-        Square slaveOsc4 = new Square(masterFreq * 2.4961);
-        slaveOsc4.setGain(0.1);
-        Square slaveOsc5 = new Square(masterFreq * 2.0558);
-        slaveOsc5.setGain(0.1);
+        FrequencyModulatedOscillator bankA = new FrequencyModulatedOscillator(new Square(1047 * toneMultiplier), new Square(1481 * toneMultiplier));
+        FrequencyModulatedOscillator bankB = new FrequencyModulatedOscillator(new Square(1109 * toneMultiplier), new Square(1049 * toneMultiplier));
+        FrequencyModulatedOscillator bankC = new FrequencyModulatedOscillator(new Saw(1175 * toneMultiplier), new Saw(1480 * toneMultiplier));
 
-        cymbal.addOscillator(masterOsc)
-                .addOscillator(slaveOsc1)
-                .addOscillator(slaveOsc2)
-                .addOscillator(slaveOsc3)
-                .addOscillator(slaveOsc4)
-                .addOscillator(slaveOsc5)
-                .addOscillator(new Noise(0.2));
+        cymbal.addOscillator(bankA).addOscillator(bankB).addOscillator(bankC).addOscillator(new Noise(0.3));
 
-        cymbal.addFilter(new BandPassFilter(4430))
-                .addFilter(new HighPassFilter(3730))
-                .addFilter(new BandPassFilter(6270))
-                .addFilter(new HighPassFilter(2640))
-                .addFilter(new HighPassFilter(1980));
+        cymbal.addFilter(new BandPassFilter(1050));
+        cymbal.addFilter(new HighPassFilter(2490));
 
-        ADSREnvelope cymbalEnvelope = new ADSREnvelope(0.005, 0.051, 0.8, 0.5);
-        cymbalEnvelope.setSustainDuration(0.445);
-        ExponentialEnvelope ampEnvelope = new ExponentialEnvelope(1, 0.001, decay);
+        ExponentialEnvelope cymbalEnvelope = new ExponentialEnvelope(1, 0.15, decay);
 
-        cymbal.setEnvelope(ampEnvelope);
-        //cymbal.setAmplifier(new VoltageControlledAmplifier(ampEnvelope));
+        cymbal.setEnvelope(cymbalEnvelope);
 
-        cymbal.generate(1);
+        cymbal.generate(3);
 
         assignClip(cymbal, cymbalClip);
     }
@@ -248,12 +226,9 @@ public class Instruments {
 
         hat.addOscillator(bankAB);
 
-        // hat.addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2));
-
         hat.addFilter(new HighPassFilter(24000));
         ExponentialEnvelope envelope = new ExponentialEnvelope(1, 0.0001, decay);
         hat.setEnvelope(envelope);
-        //hat.setAmplifier(new VoltageControlledAmplifier(envelope, 1.2));
         hat.generate(1);
 
         assignClip(hat, openHatClip);
@@ -279,12 +254,9 @@ public class Instruments {
 
         hat.addOscillator(bankAB);
 
-        // hat.addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2)).addOscillator(new Noise(0.2));
-
         hat.addFilter(new HighPassFilter(24000));
         ExponentialEnvelope envelope = new ExponentialEnvelope(1, 0.0001, 0.07);
         hat.setEnvelope(envelope);
-        //hat.setAmplifier(new VoltageControlledAmplifier(envelope, 1.2));
         hat.generate(0.8);
 
         assignClip(hat, closedHatClip);

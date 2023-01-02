@@ -362,22 +362,24 @@ public class Controller {
     }
 
     private void createCymbalParameters() {
-        int defaultTone = 103;
+        int defaultToneMultiplier = 1;
+        int defaultToneMultiplierInt = (int) (defaultToneMultiplier * 100);
+
         double defaultDecay = 0.7;
         int defaultDecayInt = (int) (defaultDecay * 10000);
 
-        cymbalTone.setValueConverter(new DialBoundedIntegerConverter(defaultTone / 2, defaultTone * 7));
-        cymbalTone.setConvertedValue(defaultTone);
+        cymbalTone.setValueConverter(new DialBoundedIntegerConverter(defaultToneMultiplier / 200, defaultToneMultiplier * 200));
+        cymbalTone.setConvertedValue(defaultToneMultiplierInt);
         cymbalTone.setOnMouseReleased(e -> {
             clearTimeline();
-            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(), cymbalDecay.convertedValue().doubleValue() / 10000f);
+            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue() / 100f, cymbalDecay.convertedValue().doubleValue() / 10000f);
         });
 
         cymbalDecay.setValueConverter(new DialBoundedIntegerConverter(defaultDecayInt / 2, defaultDecayInt * 2));
         cymbalDecay.setConvertedValue(defaultDecayInt);
         cymbalDecay.setOnMouseReleased(e -> {
             clearTimeline();
-            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue(), cymbalDecay.convertedValue().doubleValue() / 10000f);
+            Instruments.createCymbal(cymbalTone.convertedValue().doubleValue() / 100f, cymbalDecay.convertedValue().doubleValue() / 10000f);
         });
     }
 

@@ -9,6 +9,6 @@
 - maraca
 - ~~handclap~~
 - ~~cowbell~~
-- cymbal
+- ~~cymbal~~
 - ~~open hat~~
 - ~~closed hat~~
