@@ -114,19 +114,6 @@ public class Sound {
         }
     }
 
-    // Keeping generateWithFrequency since it has a nice way of operating with the
-    // others
-    public void generateWithFrequency(double freq, double duration) {
-        for (Oscillator o : oscillators) {
-            o.setFrequency(freq);
-        }
-        generate(duration);
-    }
-
-    public void generateWithFrequency(double freq) {
-        generateWithFrequency(freq, 1);
-    }
-
     private void encode(double sample) {
         if (sample < -1.0)
             sample = -1.0;
