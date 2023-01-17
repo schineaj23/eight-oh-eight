@@ -4,6 +4,7 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Oscillator;
 
 public class Sine extends Oscillator {
+    // This generates a sine waveform
     public Sine() {
         this.freq = 0;
     }

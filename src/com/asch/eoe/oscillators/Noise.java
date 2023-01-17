@@ -4,10 +4,10 @@ import java.util.Random;
 
 import com.asch.eoe.Oscillator;
 
-// Although this isn't strictly an 'oscillator'
-// Since it generates noise on its own rather than adding
-// I implemented it as an oscillator rather than a filter
 public class Noise extends Oscillator {
+    // This is not a typical 'oscillator'
+    // Since it produces random sound, I implemented it as an oscillator
+    // So that I can easily sample it in Sound
     private final Random rand;
 
     public Noise() {

@@ -4,6 +4,7 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Oscillator;
 
 public class Square extends Oscillator {
+    // This generates a square waveform
     public Square() {
         this.freq = 0;
     }

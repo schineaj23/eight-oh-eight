@@ -4,7 +4,9 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Oscillator;
 
 public class FrequencyModulatedOscillator extends Oscillator {
-
+    // This implements Frequency Modulation via the Oscillator interface.
+    // The frequency of a waveform is changed by modulating its frequency with another signal
+    // I decided to implement this as a separate oscillator since it is easier to integrate and sample
     private Oscillator modulator;
 
     private double carrierGain = 1f;

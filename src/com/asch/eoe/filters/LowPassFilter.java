@@ -4,6 +4,7 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Filter;
 
 public class LowPassFilter implements Filter {
+    // The LPF passes signals lower than the cutoff frequency
     private double previousSample = 0;
     private double alpha;
 

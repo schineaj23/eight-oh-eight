@@ -5,6 +5,8 @@ import com.asch.eoe.Envelope;
 
 public class ADSREnvelope implements Envelope {
     // An ADSR Envelope Generator
+    // The ADSR generator limits the volume of the signal dependent on the time elapsed.
+    // Through changing the envelope of the signal, we can mimic the sound of instruments.
     private double attackDuration;
     private double decayDuration;
     private double sustainGain;

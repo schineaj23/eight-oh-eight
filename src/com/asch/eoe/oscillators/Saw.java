@@ -4,6 +4,7 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Oscillator;
 
 public class Saw extends Oscillator {
+    // This generates a sawtooth waveform
     public Saw() {
         this.freq = 0;
     }

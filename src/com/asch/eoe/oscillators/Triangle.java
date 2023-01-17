@@ -4,6 +4,7 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Oscillator;
 
 public class Triangle extends Oscillator {
+    // This generates a Triangle waveform
     public Triangle() {
         this.freq = 0;
     }

@@ -13,14 +13,16 @@ import com.asch.eoe.filters.HighPassFilter;
 import com.asch.eoe.filters.LowPassFilter;
 import com.asch.eoe.oscillators.*;
 
-
-// I'm not happy about how this turned out.
-// I would rather have the instruments be their own classes with a common interface
-// However the implementation would be different every time since the tunable parameters
-// Are different, also the fact that I only wanted one instance while not having to
-// address them by number in an array made things difficult.
-// I'm not sure the best course of action but this class will do for the moment.
 public class Instruments {
+    // This class implements the logic for each instrument
+    // I first tried making every instrument its own datatype
+    // However, I ran into issues preserving the same clip
+    // While trying to access the instrument in a static manner
+    // In the end I implemented this the way I did since I wanted a
+    // "One instrument one object" paradigm with the methods modifying the instrument
+    // The state of the instrument/what to play is preserved through the static Clip objects
+    // and the user-controlled variables in the Controller class.
+
     public static Clip cowbellClip;
     public static Clip claveClip;
     public static Clip handclapClip;
@@ -194,8 +196,6 @@ public class Instruments {
         assignClip(snare, snareClip);
     }
 
-    // TODO: implement sound mixing so I can synthesize the handclap correctly
-    // Use this tutorial: https://www.youtube.com/watch?v=lG1h28gv1HU
     public static void createHandClap() {
         Sound handclap = new Sound();
         handclap.setOscillator(new Noise(0.8));

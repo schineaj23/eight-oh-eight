@@ -88,28 +88,27 @@ public class Sound {
 
     // This method generates the values of buffer for the signal
     public void generate(double duration) {
-        // Initialize our buffer for generation
+        // Initialize our buffer for generation, this is used by the clip
         buffer = new byte[(int) (Configuration.BYTES_PER_SAMPLE * duration * Configuration.SAMPLE_RATE)];
 
         for (double t = 0; t <= Configuration.SAMPLE_RATE * duration; t++) {
-            /*
-             * Design Choice: Have each filter and oscillator be an interface
-             * This way we can iterate over the filters and oscillators in a generic
-             * way without having specific logic in the 'Sound' class.
-             * I did this to create a 'builder' API for creating each sound of the 808
-             */
+            // Step 1. Sample our base signal at a given point for oscillators
             double sample = sampleOscillators(t) * gain;
 
+            // Step 2. Apply the envelope if necessary
             if (envelope != null) {
                 sample = envelope.sample(sample, t);
             }
 
+            // Step 3. Apply all filters to the signal
             sample = applyFilters(sample);
 
+            // Step 4. Apply an amplifier if necessary
             if (amplifier != null) {
                 sample = amplifier.sample(sample, t);
             }
 
+            // Step 5. Encode this sample into our clip buffer
             encode(sample);
         }
     }

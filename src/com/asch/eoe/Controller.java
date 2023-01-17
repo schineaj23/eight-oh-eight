@@ -12,9 +12,10 @@ import javafx.scene.effect.InnerShadow;
 
 import javax.sound.sampled.Clip;
 
-// Controls the UI logic.
-// I hate how long this class is.
 public class Controller {
+    // This controls the user interface logic of the application
+    // Since this was created using JavaFX in scene, every element
+    // Must be controlled in this class, leading to repetitive code.
 
     @FXML
     private DialControl accentLevel;
@@ -488,6 +489,7 @@ public class Controller {
     }
 
     public void shutdown() {
+        // Interrupt the sequencer thread so we don't hang the process and leak the line
         sequencer.interrupt();
     }
 }

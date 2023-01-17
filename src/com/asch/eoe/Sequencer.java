@@ -13,9 +13,7 @@ public class Sequencer extends Thread {
     private final ArrayList<ArrayList<Clip>> sequence = new ArrayList<>();
 
     // This is for getting each part when displaying and programming the sequence
-
-    // NOTE: I separated these because I didn't want to search the nested arraylist
-    // every time we change instruments to display
+    // I chose to use a hashtable since I didn't want to search for every step containing a given Clip
     private final Hashtable<Clip, Integer> stepsForClip;
 
     private int tempo;
@@ -25,7 +23,7 @@ public class Sequencer extends Thread {
     private final SimpleIntegerProperty stepProperty;
 
     public class Steps {
-        // Each index corresponds to the mask for that step
+        // Each index corresponds to the mask for that step, used a bitmask to avoid checking step for each Clip
         public static final int[] encodedSteps = { 0x8000, 0x4000, 0x2000, 0x1000, 0x800, 0x400, 0x200, 0x100, 0x80,
                 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1 };
     }
@@ -108,7 +106,6 @@ public class Sequencer extends Thread {
         while(true) {
             if(isPlaying)
                 stepProperty.setValue(0);
-            //System.out.println("run() called");
             while(isPlaying && stepProperty.getValue() < 16) {
                 ArrayList<Clip> clipsToPlay = sequence.get(stepProperty.getValue());
                 for(Clip c : clipsToPlay) {

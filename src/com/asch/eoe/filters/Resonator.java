@@ -3,6 +3,8 @@ package com.asch.eoe.filters;
 import com.asch.eoe.Filter;
 
 public class Resonator implements Filter {
+    // The Resonator modifies the signal so it is filtered by itself
+    // This affects the timbre of the instrument
     private double Q;
     private double previousValue;
 

@@ -3,6 +3,8 @@ package com.asch.eoe.filters;
 import com.asch.eoe.Filter;
 
 public class BandPassFilter implements Filter {
+    // This filter passes signals only in range of the cutoff frequency
+    // This is effectively high and low passing at the same cutoff frequency
     private final LowPassFilter lowPassFilter;
     private final HighPassFilter highPassFilter;
 

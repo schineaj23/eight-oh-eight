@@ -4,6 +4,8 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Envelope;
 
 public class ExponentialEnvelope implements Envelope {
+    // The exponential envelope functions similarly to the ADSR envelope
+    // Instead of varying the signal linearly, this envelope has exponential decay
     private double attackDuration;
     private double gain;
     private double timeConstant = 0;

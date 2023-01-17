@@ -4,6 +4,8 @@ import com.asch.eoe.Configuration;
 import com.asch.eoe.Filter;
 
 public class HighPassFilter implements Filter {
+    // The high pass filter passes signals only higher than the cutoff frequency
+    // The HPF removes those below the cutoff frequency
     private double previousSample = 0;
     private double previousInput = 0;
     private double alpha;
