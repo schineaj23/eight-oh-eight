@@ -94,7 +94,7 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="491.0" prefWidth="1055.0" VBox.vgrow="NEVER">
       <children>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="449.0" layoutY="222.0" style="&#10;" text="Work in progress... " textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="449.0" layoutY="222.0" style="&#10;" text="Rhythm Composer   TR-808" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>
             <Font size="18.0" />
           </font>
@@ -461,6 +461,11 @@
             <Label layoutX="340.0" layoutY="392.0" text="16" translateX="540.0" translateY="-20.0" />
             <Button fx:id="tapButton" layoutX="930.0" layoutY="382.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="41.0" text="TAP" />
             <Button fx:id="clearButton" layoutX="23.0" layoutY="404.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="CLEAR" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="575.0" layoutY="246.0" style="&#10;" text="Computer Controlled" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
       </children>
     </AnchorPane>
   </children>
